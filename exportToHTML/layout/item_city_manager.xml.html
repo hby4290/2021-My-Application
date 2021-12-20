@@ -1,0 +1,97 @@
+<html>
+<head>
+<title>item_city_manager.xml</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #e8bf6a;}
+.s1 { color: #bababa;}
+.s2 { color: #6a8759;}
+.s3 { color: #a9b7c6;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+item_city_manager.xml</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;?</span><span class="s1">xml version</span><span class="s2">=&quot;1.0&quot; </span><span class="s1">encoding</span><span class="s2">=&quot;utf-8&quot;</span><span class="s0">?&gt;</span>
+<span class="s0">&lt;LinearLayout </span><span class="s1">xmlns:android</span><span class="s2">=&quot;http://schemas.android.com/apk/res/android&quot;</span>
+    <span class="s1">xmlns:app</span><span class="s2">=&quot;http://schemas.android.com/apk/res-auto&quot;</span>
+    <span class="s1">android:orientation</span><span class="s2">=&quot;vertical&quot; </span><span class="s1">android:layout_width</span><span class="s2">=&quot;match_parent&quot;</span>
+    <span class="s1">android:layout_height</span><span class="s2">=&quot;match_parent&quot;</span>
+    <span class="s1">android:padding</span><span class="s2">=&quot;5dp&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;androidx.cardview.widget.CardView</span>
+        <span class="s1">android:id</span><span class="s2">=&quot;@+id/item_city_cv&quot;</span>
+        <span class="s1">android:layout_width</span><span class="s2">=&quot;match_parent&quot;</span>
+        <span class="s1">android:layout_height</span><span class="s2">=&quot;wrap_content&quot;</span>
+        <span class="s1">android:layout_margin</span><span class="s2">=&quot;3dp&quot;</span>
+        <span class="s1">app:cardCornerRadius</span><span class="s2">=&quot;10dp&quot;</span>
+        <span class="s1">app:cardElevation</span><span class="s2">=&quot;5dp&quot;</span>
+        <span class="s1">app:contentPadding</span><span class="s2">=&quot;10dp&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;RelativeLayout</span>
+            <span class="s1">android:layout_width</span><span class="s2">=&quot;match_parent&quot;</span>
+            <span class="s1">android:layout_height</span><span class="s2">=&quot;wrap_content&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;TextView</span>
+                <span class="s1">android:id</span><span class="s2">=&quot;@+id/item_city_tv_city&quot;</span>
+                <span class="s1">android:layout_marginTop</span><span class="s2">=&quot;12dp&quot;</span>
+                <span class="s1">android:layout_marginLeft</span><span class="s2">=&quot;20dp&quot;</span>
+                <span class="s1">android:layout_width</span><span class="s2">=&quot;wrap_content&quot;</span>
+                <span class="s1">android:layout_height</span><span class="s2">=&quot;wrap_content&quot;</span>
+                <span class="s1">android:textStyle</span><span class="s2">=&quot;bold&quot;</span>
+                <span class="s1">android:textSize</span><span class="s2">=&quot;30sp&quot;</span>
+                <span class="s1">android:text</span><span class="s2">=&quot;北京&quot;</span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;TextView</span>
+                <span class="s1">android:id</span><span class="s2">=&quot;@+id/item_city_tv_temp&quot;</span>
+                <span class="s1">android:layout_width</span><span class="s2">=&quot;wrap_content&quot;</span>
+                <span class="s1">android:layout_height</span><span class="s2">=&quot;wrap_content&quot;</span>
+                <span class="s1">android:textSize</span><span class="s2">=&quot;40sp&quot;</span>
+                <span class="s1">android:layout_alignParentRight</span><span class="s2">=&quot;true&quot;</span>
+                <span class="s1">android:layout_marginRight</span><span class="s2">=&quot;20dp&quot;</span>
+                <span class="s1">android:text</span><span class="s2">=&quot;12℃&quot;</span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;ImageView</span>
+                <span class="s1">android:id</span><span class="s2">=&quot;@+id/item_city_line1&quot;</span>
+                <span class="s1">android:layout_width</span><span class="s2">=&quot;match_parent&quot;</span>
+                <span class="s1">android:layout_height</span><span class="s2">=&quot;2dp&quot;</span>
+                <span class="s1">android:layout_below</span><span class="s2">=&quot;@id/item_city_tv_temp&quot;</span>
+                <span class="s1">android:layout_marginTop</span><span class="s2">=&quot;10dp&quot;</span>
+                <span class="s1">android:layout_marginBottom</span><span class="s2">=&quot;10dp&quot;</span>
+                <span class="s1">android:background</span><span class="s2">=&quot;#2E8B57&quot;</span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;TextView</span>
+                <span class="s1">android:id</span><span class="s2">=&quot;@+id/item_city_tv_condition&quot;</span>
+                <span class="s1">android:layout_width</span><span class="s2">=&quot;wrap_content&quot;</span>
+                <span class="s1">android:layout_height</span><span class="s2">=&quot;wrap_content&quot;</span>
+                <span class="s1">android:textSize</span><span class="s2">=&quot;16sp&quot;</span>
+                <span class="s1">android:layout_below</span><span class="s2">=&quot;@id/item_city_line1&quot;</span>
+                <span class="s1">android:text</span><span class="s2">=&quot;天气:晴&quot;</span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;TextView</span>
+                <span class="s1">android:id</span><span class="s2">=&quot;@+id/item_city_line2&quot;</span>
+                <span class="s1">android:layout_width</span><span class="s2">=&quot;2dp&quot;</span>
+                <span class="s1">android:layout_height</span><span class="s2">=&quot;20dp&quot;</span>
+                <span class="s1">android:layout_toRightOf</span><span class="s2">=&quot;@id/item_city_tv_condition&quot;</span>
+                <span class="s1">android:layout_marginLeft</span><span class="s2">=&quot;5dp&quot;</span>
+                <span class="s1">android:layout_marginRight</span><span class="s2">=&quot;5dp&quot;</span>
+                <span class="s1">android:background</span><span class="s2">=&quot;#2E8B57&quot;</span>
+                <span class="s1">android:layout_below</span><span class="s2">=&quot;@id/item_city_line1&quot;</span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;TextView</span>
+                <span class="s1">android:id</span><span class="s2">=&quot;@+id/item_city_wind&quot;</span>
+                <span class="s1">android:layout_width</span><span class="s2">=&quot;wrap_content&quot;</span>
+                <span class="s1">android:layout_height</span><span class="s2">=&quot;wrap_content&quot;</span>
+                <span class="s1">android:textSize</span><span class="s2">=&quot;16sp&quot;</span>
+                <span class="s1">android:layout_toRightOf</span><span class="s2">=&quot;@id/item_city_line2&quot;</span>
+                <span class="s1">android:layout_below</span><span class="s2">=&quot;@id/item_city_line1&quot;</span>
+                <span class="s1">android:text</span><span class="s2">=&quot;西南风2级&quot;</span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;TextView</span>
+                <span class="s1">android:id</span><span class="s2">=&quot;@+id/item_city_temprange&quot;</span>
+                <span class="s1">android:layout_width</span><span class="s2">=&quot;wrap_content&quot;</span>
+                <span class="s1">android:layout_height</span><span class="s2">=&quot;wrap_content&quot;</span>
+                <span class="s1">android:layout_below</span><span class="s2">=&quot;@id/item_city_line1&quot;</span>
+                <span class="s1">android:textSize</span><span class="s2">=&quot;16sp&quot;</span>
+                <span class="s1">android:layout_alignParentRight</span><span class="s2">=&quot;true&quot;</span>
+                <span class="s1">android:text</span><span class="s2">=&quot;16~9℃&quot;</span>
+                <span class="s1">android:layout_marginRight</span><span class="s2">=&quot;20dp&quot;</span><span class="s0">/&gt;</span>
+        <span class="s0">&lt;/RelativeLayout&gt;</span>
+    <span class="s0">&lt;/androidx.cardview.widget.CardView&gt;</span>
+<span class="s0">&lt;/LinearLayout&gt;</span></pre>
+</body>
+</html>

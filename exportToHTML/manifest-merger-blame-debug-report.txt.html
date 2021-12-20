@@ -1,0 +1,80 @@
+<html>
+<head>
+<title>manifest-merger-blame-debug-report.txt</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #a9b7c6;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+manifest-merger-blame-debug-report.txt</font>
+</center></td></tr></table>
+<pre><span class="s0">1&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="s0">2&lt;manifest xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</span>
+<span class="s0">3    package=&quot;com.example.myapplication&quot;</span>
+<span class="s0">4    android:versionCode=&quot;1&quot;</span>
+<span class="s0">5    android:versionName=&quot;1.0&quot; &gt;</span>
+<span class="s0">6</span>
+<span class="s0">7    &lt;uses-sdk</span>
+<span class="s0">8        android:minSdkVersion=&quot;21&quot;</span>
+<span class="s0">8--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml</span>
+<span class="s0">9        android:targetSdkVersion=&quot;28&quot; /&gt;</span>
+<span class="s0">9--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml</span>
+<span class="s0">10</span>
+<span class="s0">11    &lt;uses-permission android:name=&quot;android.permission.INTERNET&quot; /&gt;</span>
+<span class="s0">11--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:4:5-67</span>
+<span class="s0">11--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:4:22-64</span>
+<span class="s0">12</span>
+<span class="s0">13    &lt;application</span>
+<span class="s0">13--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:6:5-28:19</span>
+<span class="s0">14        android:name=&quot;com.example.myapplication.base.UniteApp&quot;</span>
+<span class="s0">14--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:7:9-38</span>
+<span class="s0">15        android:allowBackup=&quot;true&quot;</span>
+<span class="s0">15--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:8:9-35</span>
+<span class="s0">16        android:appComponentFactory=&quot;androidx.core.app.CoreComponentFactory&quot;</span>
+<span class="s0">16--&gt;[androidx.core:core:1.3.1] C:\Users\hby\.gradle\caches\transforms-2\files-2.1\880800a4edd8e54144964a8d6f4b8e71\core-1.3.1\AndroidManifest.xml:24:18-86</span>
+<span class="s0">17        android:debuggable=&quot;true&quot;</span>
+<span class="s0">18        android:icon=&quot;@mipmap/ic_launcher&quot;</span>
+<span class="s0">18--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:9:9-43</span>
+<span class="s0">19        android:label=&quot;@string/app_name&quot;</span>
+<span class="s0">19--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:10:9-41</span>
+<span class="s0">20        android:roundIcon=&quot;@mipmap/ic_launcher_round&quot;</span>
+<span class="s0">20--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:11:9-54</span>
+<span class="s0">21        android:supportsRtl=&quot;true&quot;</span>
+<span class="s0">21--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:12:9-35</span>
+<span class="s0">22        android:testOnly=&quot;true&quot;</span>
+<span class="s0">23        android:theme=&quot;@style/AppTheme&quot; &gt;</span>
+<span class="s0">23--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:13:9-40</span>
+<span class="s0">24        &lt;activity</span>
+<span class="s0">24--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:14:9-21:20</span>
+<span class="s0">25            android:name=&quot;com.example.myapplication.DengLuMainActivity&quot;</span>
+<span class="s0">25--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:15:13-47</span>
+<span class="s0">26            android:exported=&quot;true&quot; &gt;</span>
+<span class="s0">26--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:16:13-36</span>
+<span class="s0">27            &lt;intent-filter&gt;</span>
+<span class="s0">27--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:17:13-20:29</span>
+<span class="s0">28                &lt;action android:name=&quot;android.intent.action.MAIN&quot; /&gt;</span>
+<span class="s0">28--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:18:17-68</span>
+<span class="s0">28--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:18:25-66</span>
+<span class="s0">29</span>
+<span class="s0">30                &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot; /&gt;</span>
+<span class="s0">30--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:19:17-76</span>
+<span class="s0">30--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:19:27-74</span>
+<span class="s0">31            &lt;/intent-filter&gt;</span>
+<span class="s0">32        &lt;/activity&gt;</span>
+<span class="s0">33        &lt;activity android:name=&quot;com.example.myapplication.city_manager.CityManagerActivity&quot; /&gt;</span>
+<span class="s0">33--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:22:9-70</span>
+<span class="s0">33--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:22:19-67</span>
+<span class="s0">34        &lt;activity android:name=&quot;com.example.myapplication.city_manager.SearchCityActivity&quot; /&gt;</span>
+<span class="s0">34--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:23:9-69</span>
+<span class="s0">34--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:23:19-66</span>
+<span class="s0">35        &lt;activity android:name=&quot;com.example.myapplication.city_manager.DeleteCityActivity&quot; /&gt;</span>
+<span class="s0">35--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:24:9-69</span>
+<span class="s0">35--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidManifest.xml:24:19-66</span>
+<span class="s0">36        &lt;activity android:name=&quot;com.example.myapplication.MoreActivity&quot; /&gt;</span>
+<span class="s0">36--&gt;C:\Users\hby\AndroidStudioProjects\Application\app\src\main\AndroidM</span></pre>
+</body>
+</html>

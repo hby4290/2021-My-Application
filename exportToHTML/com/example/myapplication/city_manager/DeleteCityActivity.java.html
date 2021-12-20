@@ -1,0 +1,88 @@
+<html>
+<head>
+<title>DeleteCityActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6a8759;}
+.s4 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+DeleteCityActivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.myapplication.city_manager</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.app.AlertDialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.DialogInterface</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ListView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.example.myapplication.R</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.example.myapplication.db.DBManager</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.List</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">DeleteCityActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity </span><span class="s0">implements </span><span class="s1">View.OnClickListener{</span>
+    <span class="s1">ImageView errorIv</span><span class="s0">,</span><span class="s1">rightIv</span><span class="s0">;</span>
+    <span class="s1">ListView deleteLv</span><span class="s0">;</span>
+    <span class="s1">List&lt;String&gt;mDatas</span><span class="s0">;   </span><span class="s2">//listview的数据源</span>
+    <span class="s1">List&lt;String&gt;deleteCitys</span><span class="s0">;  </span><span class="s2">//表示存储了删除的城市信息</span>
+    <span class="s0">private </span><span class="s1">DeleteCityAdapter adapter</span><span class="s0">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_delete_city)</span><span class="s0">;</span>
+        <span class="s1">errorIv = findViewById(R.id.delete_iv_error)</span><span class="s0">;</span>
+        <span class="s1">rightIv = findViewById(R.id.delete_iv_right)</span><span class="s0">;</span>
+        <span class="s1">deleteLv = findViewById(R.id.delete_lv)</span><span class="s0">;</span>
+        <span class="s1">mDatas = DBManager.queryAllCityName()</span><span class="s0">;</span>
+        <span class="s1">deleteCitys = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+<span class="s2">//        设置点击监听事件</span>
+        <span class="s1">errorIv.setOnClickListener(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">rightIv.setOnClickListener(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+<span class="s2">//        适配器的设置</span>
+        <span class="s1">adapter = </span><span class="s0">new </span><span class="s1">DeleteCityAdapter(</span><span class="s0">this, </span><span class="s1">mDatas</span><span class="s0">, </span><span class="s1">deleteCitys)</span><span class="s0">;</span>
+        <span class="s1">deleteLv.setAdapter(adapter)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+        <span class="s0">switch </span><span class="s1">(v.getId()) {</span>
+            <span class="s0">case </span><span class="s1">R.id.delete_iv_error:</span>
+                <span class="s1">AlertDialog.Builder builder = </span><span class="s0">new </span><span class="s1">AlertDialog.Builder(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">builder.setTitle(</span><span class="s3">&quot;提示信息&quot;</span><span class="s1">).setMessage(</span><span class="s3">&quot;您确定要舍弃更改么？&quot;</span><span class="s1">)</span>
+                        <span class="s1">.setPositiveButton(</span><span class="s3">&quot;舍弃更改&quot;</span><span class="s0">, new </span><span class="s1">DialogInterface.OnClickListener() {</span>
+                            <span class="s1">@Override</span>
+                            <span class="s0">public void </span><span class="s1">onClick(DialogInterface dialog</span><span class="s0">, int </span><span class="s1">which) {</span>
+                                    <span class="s1">finish()</span><span class="s0">;   </span><span class="s2">//关闭当前的activity</span>
+                            <span class="s1">}</span>
+                        <span class="s1">})</span><span class="s0">;</span>
+                <span class="s1">builder.setNegativeButton(</span><span class="s3">&quot;取消&quot;</span><span class="s0">,null</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">builder.create().show()</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s1">R.id.delete_iv_right:</span>
+                <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s4">0</span><span class="s0">; </span><span class="s1">i &lt; deleteCitys.size()</span><span class="s0">; </span><span class="s1">i++) {</span>
+                    <span class="s1">String city = deleteCitys.get(i)</span><span class="s0">;</span>
+<span class="s2">//                    调用删除城市的函数</span>
+                    <span class="s0">int </span><span class="s1">i1 = DBManager.deleteInfoByCity(city)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+<span class="s2">//                删除成功返回上一级页面</span>
+                <span class="s1">finish()</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

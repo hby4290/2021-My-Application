@@ -1,0 +1,89 @@
+<html>
+<head>
+<title>DeleteCityAdapter.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+DeleteCityAdapter.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.myapplication.city_manager</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.ViewGroup</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.BaseAdapter</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.example.myapplication.R</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.List</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">DeleteCityAdapter </span><span class="s0">extends </span><span class="s1">BaseAdapter{</span>
+    <span class="s1">Context context</span><span class="s0">;</span>
+    <span class="s1">List&lt;String&gt;mDatas</span><span class="s0">;</span>
+    <span class="s1">List&lt;String&gt;deleteCitys</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">DeleteCityAdapter(Context context</span><span class="s0">, </span><span class="s1">List&lt;String&gt; mDatas</span><span class="s0">,</span><span class="s1">List&lt;String&gt;deleteCitys) {</span>
+        <span class="s0">this</span><span class="s1">.context = context</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.mDatas = mDatas</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.deleteCitys = deleteCitys</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public int </span><span class="s1">getCount() {</span>
+        <span class="s0">return </span><span class="s1">mDatas.size()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">Object getItem(</span><span class="s0">int </span><span class="s1">position) {</span>
+        <span class="s0">return </span><span class="s1">mDatas.get(position)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public long </span><span class="s1">getItemId(</span><span class="s0">int </span><span class="s1">position) {</span>
+        <span class="s0">return </span><span class="s1">position</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">View getView(</span><span class="s0">int </span><span class="s1">position</span><span class="s0">, </span><span class="s1">View convertView</span><span class="s0">, </span><span class="s1">ViewGroup parent) {</span>
+        <span class="s1">ViewHolder holder = </span><span class="s0">null;</span>
+        <span class="s0">if </span><span class="s1">(convertView == </span><span class="s0">null</span><span class="s1">) {</span>
+            <span class="s1">convertView = LayoutInflater.from(context).inflate(R.layout.item_deletecity</span><span class="s0">,null</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">holder = </span><span class="s0">new </span><span class="s1">ViewHolder(convertView)</span><span class="s0">;</span>
+            <span class="s1">convertView.setTag(holder)</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else</span><span class="s1">{</span>
+            <span class="s1">holder = (ViewHolder) convertView.getTag()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">final </span><span class="s1">String city = mDatas.get(position)</span><span class="s0">;</span>
+        <span class="s1">holder.tv.setText(city)</span><span class="s0">;</span>
+        <span class="s1">holder.iv.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">mDatas.remove(city)</span><span class="s0">;</span>
+                <span class="s1">deleteCitys.add(city)</span><span class="s0">;</span>
+                <span class="s1">notifyDataSetChanged()</span><span class="s0">;  </span><span class="s2">//删除了提示适配器更新</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">convertView</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">class </span><span class="s1">ViewHolder{</span>
+        <span class="s1">TextView tv</span><span class="s0">;</span>
+        <span class="s1">ImageView iv</span><span class="s0">;</span>
+        <span class="s0">public </span><span class="s1">ViewHolder(View itemView){</span>
+            <span class="s1">tv = itemView.findViewById(R.id.item_delete_tv)</span><span class="s0">;</span>
+            <span class="s1">iv = itemView.findViewById(R.id.item_delete_iv)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

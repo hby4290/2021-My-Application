@@ -1,0 +1,170 @@
+<html>
+<head>
+<title>MoreActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #808080;}
+.s4 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+MoreActivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.myapplication</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.app.AlertDialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.DialogInterface</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.SharedPreferences</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.pm.PackageInfo</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.pm.PackageManager</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.RadioGroup</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.example.myapplication.db.DBManager</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+
+
+<span class="s0">public class </span><span class="s1">MoreActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity </span><span class="s0">implements </span><span class="s1">View.OnClickListener{</span>
+    <span class="s1">TextView bgTv</span><span class="s0">,</span><span class="s1">cacheTv</span><span class="s0">,</span><span class="s1">versionTv</span><span class="s0">,</span><span class="s1">shareTv</span><span class="s0">;</span>
+    <span class="s1">RadioGroup exbgRg</span><span class="s0">;</span>
+    <span class="s1">ImageView backIv</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">SharedPreferences pref</span><span class="s0">;</span>
+
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_more)</span><span class="s0">;</span>
+        <span class="s1">bgTv = findViewById(R.id.more_tv_exchangebg)</span><span class="s0">;</span>
+        <span class="s1">cacheTv = findViewById(R.id.more_tv_cache)</span><span class="s0">;</span>
+        <span class="s1">versionTv = findViewById(R.id.more_tv_version)</span><span class="s0">;</span>
+        <span class="s1">shareTv = findViewById(R.id.more_tv_share)</span><span class="s0">;</span>
+        <span class="s1">backIv = findViewById(R.id.more_iv_back)</span><span class="s0">;</span>
+        <span class="s1">exbgRg = findViewById(R.id.more_rg)</span><span class="s0">;</span>
+        <span class="s1">bgTv.setOnClickListener(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">cacheTv.setOnClickListener(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">shareTv.setOnClickListener(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">backIv.setOnClickListener(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">pref = getSharedPreferences(</span><span class="s2">&quot;bg_pref&quot;</span><span class="s0">, </span><span class="s1">MODE_PRIVATE)</span><span class="s0">;</span>
+        <span class="s1">String versionName = getVersionName()</span><span class="s0">;</span>
+        <span class="s1">versionTv.setText(</span><span class="s2">&quot;当前版本:    v&quot;</span><span class="s1">+versionName)</span><span class="s0">;</span>
+        <span class="s1">setRGListener()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">setRGListener() {</span>
+        <span class="s3">/* 设置改变背景图片的单选按钮的监听*/</span>
+        <span class="s1">exbgRg.setOnCheckedChangeListener(</span><span class="s0">new </span><span class="s1">RadioGroup.OnCheckedChangeListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onCheckedChanged(RadioGroup group</span><span class="s0">, int </span><span class="s1">checkedId) {</span>
+<span class="s3">//                获取目前的默认壁纸</span>
+                <span class="s0">int </span><span class="s1">bg = pref.getInt(</span><span class="s2">&quot;bg&quot;</span><span class="s0">, </span><span class="s4">0</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">SharedPreferences.Editor editor = pref.edit()</span><span class="s0">;</span>
+                <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(MoreActivity.</span><span class="s0">this,</span><span class="s1">MainActivity.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK)</span><span class="s0">;</span>
+                <span class="s0">switch </span><span class="s1">(checkedId) {</span>
+                    <span class="s0">case </span><span class="s1">R.id.more_rb_green:</span>
+                        <span class="s0">if </span><span class="s1">(bg==</span><span class="s4">0</span><span class="s1">) {</span>
+                            <span class="s1">Toast.makeText(MoreActivity.</span><span class="s0">this,</span><span class="s2">&quot;您选择的为当前背景，无需改变！&quot;</span><span class="s0">,</span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                            <span class="s0">return;</span>
+                        <span class="s1">}</span>
+                        <span class="s1">editor.putInt(</span><span class="s2">&quot;bg&quot;</span><span class="s0">,</span><span class="s4">0</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">editor.commit()</span><span class="s0">;</span>
+                        <span class="s0">break;</span>
+                    <span class="s0">case </span><span class="s1">R.id.more_rb_pink:</span>
+                        <span class="s0">if </span><span class="s1">(bg==</span><span class="s4">1</span><span class="s1">) {</span>
+                            <span class="s1">Toast.makeText(MoreActivity.</span><span class="s0">this,</span><span class="s2">&quot;您选择的为当前背景，无需改变！&quot;</span><span class="s0">,</span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                            <span class="s0">return;</span>
+                        <span class="s1">}</span>
+                        <span class="s1">editor.putInt(</span><span class="s2">&quot;bg&quot;</span><span class="s0">,</span><span class="s4">1</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">editor.commit()</span><span class="s0">;</span>
+                        <span class="s0">break;</span>
+                    <span class="s0">case </span><span class="s1">R.id.more_rb_blue:</span>
+                        <span class="s0">if </span><span class="s1">(bg==</span><span class="s4">2</span><span class="s1">) {</span>
+                            <span class="s1">Toast.makeText(MoreActivity.</span><span class="s0">this,</span><span class="s2">&quot;您选择的为当前背景，无需改变！&quot;</span><span class="s0">,</span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                            <span class="s0">return;</span>
+                        <span class="s1">}</span>
+                        <span class="s1">editor.putInt(</span><span class="s2">&quot;bg&quot;</span><span class="s0">,</span><span class="s4">2</span><span class="s1">)</span><span class="s0">;</span>
+                        <span class="s1">editor.commit()</span><span class="s0">;</span>
+                        <span class="s0">break;</span>
+                <span class="s1">}</span>
+                <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+        <span class="s0">switch </span><span class="s1">(v.getId()) {</span>
+            <span class="s0">case </span><span class="s1">R.id.more_iv_back:</span>
+                <span class="s1">finish()</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s1">R.id.more_tv_cache:</span>
+                <span class="s1">clearCache()</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s1">R.id.more_tv_share:</span>
+                <span class="s1">shareSoftwareMsg(</span><span class="s2">&quot;说天气app是一款超萌超可爱的天气预报软件，画面简约，播报天气情况非常精准，快来下载吧！&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s1">R.id.more_tv_exchangebg:</span>
+                <span class="s0">if </span><span class="s1">(exbgRg.getVisibility() == View.VISIBLE) {</span>
+                    <span class="s1">exbgRg.setVisibility(View.GONE)</span><span class="s0">;</span>
+                <span class="s1">}</span><span class="s0">else</span><span class="s1">{</span>
+                    <span class="s1">exbgRg.setVisibility(View.VISIBLE)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s0">break;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">shareSoftwareMsg(String s) {</span>
+        <span class="s3">/* 分享软件的函数*/</span>
+        <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(Intent.ACTION_SEND)</span><span class="s0">;</span>
+        <span class="s1">intent.setType(</span><span class="s2">&quot;text/plain&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">intent.putExtra(Intent.EXTRA_TEXT</span><span class="s0">,</span><span class="s1">s)</span><span class="s0">;</span>
+        <span class="s1">startActivity(Intent.createChooser(intent</span><span class="s0">,</span><span class="s2">&quot;说天气&quot;</span><span class="s1">))</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">clearCache() {</span>
+        <span class="s3">/* 清除缓存的函数*/</span>
+        <span class="s1">AlertDialog.Builder builder = </span><span class="s0">new </span><span class="s1">AlertDialog.Builder(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">builder.setTitle(</span><span class="s2">&quot;提示信息&quot;</span><span class="s1">).setMessage(</span><span class="s2">&quot;确定要删除所有缓存么？&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">builder.setPositiveButton(</span><span class="s2">&quot;确定&quot;</span><span class="s0">, new </span><span class="s1">DialogInterface.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(DialogInterface dialog</span><span class="s0">, int </span><span class="s1">which) {</span>
+                <span class="s1">DBManager.deleteAllInfo()</span><span class="s0">;</span>
+                <span class="s1">Toast.makeText(MoreActivity.</span><span class="s0">this,</span><span class="s2">&quot;已清除全部缓存！&quot;</span><span class="s0">,</span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(MoreActivity.</span><span class="s0">this, </span><span class="s1">MainActivity.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK)</span><span class="s0">;</span>
+                <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}).setNegativeButton(</span><span class="s2">&quot;取消&quot;</span><span class="s0">,null</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">builder.create().show()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">public </span><span class="s1">String getVersionName() {</span>
+        <span class="s3">/* 获取应用的版本名称*/</span>
+        <span class="s1">PackageManager manager = getPackageManager()</span><span class="s0">;</span>
+        <span class="s1">String versionName = </span><span class="s0">null;</span>
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">PackageInfo info = manager.getPackageInfo(getPackageName()</span><span class="s0">, </span><span class="s4">0</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">versionName = info.versionName</span><span class="s0">;</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(PackageManager.NameNotFoundException e) {</span>
+            <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">versionName</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<html>
+<head>
+<title>MainActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6897bb;}
+.s4 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+MainActivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.myapplication</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.Fragment</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.viewpager.widget.ViewPager</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.SharedPreferences</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.text.TextUtils</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.util.Log</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.LinearLayout</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.RelativeLayout</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.example.myapplication.city_manager.CityManagerActivity</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.example.myapplication.db.DBManager</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.List</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">MainActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity </span><span class="s0">implements </span><span class="s1">View.OnClickListener{</span>
+    <span class="s1">ImageView addCityIv</span><span class="s0">,</span><span class="s1">moreIv</span><span class="s0">;</span>
+    <span class="s1">LinearLayout pointLayout</span><span class="s0">;</span>
+    <span class="s1">RelativeLayout outLayout</span><span class="s0">;</span>
+    <span class="s1">ViewPager mainVp</span><span class="s0">;</span>
+    <span class="s2">//    ViewPager的数据源</span>
+    <span class="s1">List&lt;Fragment&gt;fragmentList</span><span class="s0">;</span>
+    <span class="s2">//    表示需要显示的城市的集合</span>
+    <span class="s1">List&lt;String&gt;cityList</span><span class="s0">;</span>
+    <span class="s2">//    表示ViewPager的页数指数器显示集合</span>
+    <span class="s1">List&lt;ImageView&gt;imgList</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">CityFragmentPagerAdapter adapter</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">SharedPreferences pref</span><span class="s0">;</span>
+    <span class="s0">private int </span><span class="s1">bgNum</span><span class="s0">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_main)</span><span class="s0">;</span>
+        <span class="s1">addCityIv = findViewById(R.id.main_iv_add)</span><span class="s0">;</span>
+        <span class="s1">moreIv = findViewById(R.id.main_iv_more)</span><span class="s0">;</span>
+        <span class="s1">pointLayout = findViewById(R.id.main_layout_point)</span><span class="s0">;</span>
+        <span class="s1">outLayout = findViewById(R.id.main_out_layout)</span><span class="s0">;</span>
+        <span class="s1">exchangeBg()</span><span class="s0">;</span>
+        <span class="s1">mainVp = findViewById(R.id.main_vp)</span><span class="s0">;</span>
+<span class="s2">//        添加点击事件</span>
+        <span class="s1">addCityIv.setOnClickListener(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">moreIv.setOnClickListener(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">fragmentList = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+<span class="s2">//        cityList = new ArrayList&lt;&gt;();</span>
+        <span class="s1">cityList = DBManager.queryAllCityName()</span><span class="s0">;  </span><span class="s2">//获取数据库包含的城市信息列表</span>
+        <span class="s1">imgList = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+
+        <span class="s0">if </span><span class="s1">(cityList.size()==</span><span class="s3">0</span><span class="s1">) {</span>
+            <span class="s1">cityList.add(</span><span class="s4">&quot;北京&quot;</span><span class="s1">)</span><span class="s0">;</span>
+<span class="s2">//            cityList.add(&quot;上海&quot;);</span>
+<span class="s2">//            cityList.add(&quot;广东省 广州&quot;);</span>
+<span class="s2">//            cityList.add(&quot;广东省 深圳&quot;);</span>
+<span class="s2">//            cityList.add(&quot;福建省 厦门&quot;);</span>
+        <span class="s1">}</span>
+        <span class="s2">/* 因为可能搜索界面点击跳转此界面，会传值，所以此处获取一下*/</span>
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">Intent intent = getIntent()</span><span class="s0">;</span>
+            <span class="s1">String city = intent.getStringExtra(</span><span class="s4">&quot;city&quot;</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s0">if </span><span class="s1">(!cityList.contains(city)&amp;&amp;!TextUtils.isEmpty(city)) {</span>
+                <span class="s1">cityList.add(city)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span><span class="s0">catch </span><span class="s1">(Exception e){</span>
+            <span class="s1">Log.i(</span><span class="s4">&quot;animee&quot;</span><span class="s0">,</span><span class="s4">&quot;程序出现问题了！！&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+<span class="s2">//        初始化ViewPager页面的方法</span>
+        <span class="s1">initPager()</span><span class="s0">;</span>
+        <span class="s1">adapter = </span><span class="s0">new </span><span class="s1">CityFragmentPagerAdapter(getSupportFragmentManager()</span><span class="s0">, </span><span class="s1">fragmentList)</span><span class="s0">;</span>
+        <span class="s1">mainVp.setAdapter(adapter)</span><span class="s0">;</span>
+<span class="s2">//        创建小圆点指示器</span>
+        <span class="s1">initPoint()</span><span class="s0">;</span>
+<span class="s2">//        设置最后一个城市信息</span>
+        <span class="s1">mainVp.setCurrentItem(fragmentList.size()-</span><span class="s3">1</span><span class="s1">)</span><span class="s0">;</span>
+<span class="s2">//        设置ViewPager页面监听，下面的圆点会随viewpaper的滑动二变化</span>
+        <span class="s1">setPagerListener()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+
+    <span class="s2">//        换壁纸的函数</span>
+    <span class="s0">public void </span><span class="s1">exchangeBg(){</span>
+        <span class="s1">pref = getSharedPreferences(</span><span class="s4">&quot;bg_pref&quot;</span><span class="s0">, </span><span class="s1">MODE_PRIVATE)</span><span class="s0">;</span>
+        <span class="s1">bgNum = pref.getInt(</span><span class="s4">&quot;bg&quot;</span><span class="s0">, </span><span class="s3">2</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">switch </span><span class="s1">(bgNum) {</span>
+            <span class="s0">case </span><span class="s3">0</span><span class="s1">:</span>
+                <span class="s1">outLayout.setBackgroundResource(R.mipmap.bg)</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s3">1</span><span class="s1">:</span>
+                <span class="s1">outLayout.setBackgroundResource(R.mipmap.bg2)</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s3">2</span><span class="s1">:</span>
+                <span class="s1">outLayout.setBackgroundResource(R.mipmap.bg3)</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+        <span class="s1">}</span>
+
+    <span class="s1">}</span>
+    <span class="s2">//        设置ViewPager页面监听，下面的圆点会随viewpaper的滑动而变化</span>
+    <span class="s0">private void </span><span class="s1">setPagerListener() {</span>
+        <span class="s2">/* 设置监听事件*/</span>
+        <span class="s1">mainVp.addOnPageChangeListener(</span><span class="s0">new </span><span class="s1">ViewPager.OnPageChangeListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onPageScrolled(</span><span class="s0">int </span><span class="s1">position</span><span class="s0">, float </span><span class="s1">positionOffset</span><span class="s0">, int </span><span class="s1">positionOffsetPixels) {</span>
+            <span class="s1">}</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onPageSelected(</span><span class="s0">int </span><span class="s1">position) {</span>
+                <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s3">0</span><span class="s0">; </span><span class="s1">i &lt; imgList.size()</span><span class="s0">; </span><span class="s1">i++) {</span>
+                    <span class="s1">imgList.get(i).setImageResource(R.mipmap.a1)</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s1">imgList.get(position).setImageResource(R.mipmap.a2)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onPageScrollStateChanged(</span><span class="s0">int </span><span class="s1">state) {</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">initPoint() {</span>
+<span class="s2">//        创建小圆点 ViewPager页面指示器的函数</span>
+        <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s3">0</span><span class="s0">; </span><span class="s1">i &lt; fragmentList.size()</span><span class="s0">; </span><span class="s1">i++) {</span>
+            <span class="s1">ImageView pIv = </span><span class="s0">new </span><span class="s1">ImageView(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">pIv.setImageResource(R.mipmap.a1)</span><span class="s0">;</span>
+            <span class="s1">pIv.setLayoutParams(</span><span class="s0">new </span><span class="s1">LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT</span><span class="s0">, </span><span class="s1">LinearLayout.LayoutParams.WRAP_CONTENT))</span><span class="s0">;</span>
+            <span class="s1">LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) pIv.getLayoutParams()</span><span class="s0">;</span>
+            <span class="s2">//设置外间距</span>
+            <span class="s1">lp.setMargins(</span><span class="s3">0</span><span class="s0">,</span><span class="s3">0</span><span class="s0">,</span><span class="s3">20</span><span class="s0">,</span><span class="s3">0</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">imgList.add(pIv)</span><span class="s0">;</span>
+            <span class="s1">pointLayout.addView(pIv)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s1">imgList.get(imgList.size()-</span><span class="s3">1</span><span class="s1">).setImageResource(R.mipmap.a2)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">initPager() {</span>
+        <span class="s2">/* 创建Fragment对象，添加到ViewPager数据源当中*/</span>
+        <span class="s0">for </span><span class="s1">(</span><span class="s0">int </span><span class="s1">i = </span><span class="s3">0</span><span class="s0">; </span><span class="s1">i &lt; cityList.size()</span><span class="s0">; </span><span class="s1">i++) {</span>
+            <span class="s1">CityWeatherFragment cwFrag = </span><span class="s0">new </span><span class="s1">CityWeatherFragment()</span><span class="s0">;</span>
+            <span class="s2">//bundle来获取</span>
+            <span class="s1">Bundle bundle = </span><span class="s0">new </span><span class="s1">Bundle()</span><span class="s0">;</span>
+            <span class="s1">bundle.putString(</span><span class="s4">&quot;city&quot;</span><span class="s0">,</span><span class="s1">cityList.get(i))</span><span class="s0">;</span>
+            <span class="s1">cwFrag.setArguments(bundle)</span><span class="s0">;</span>
+            <span class="s1">fragmentList.add(cwFrag)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+        <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent()</span><span class="s0">;</span>
+        <span class="s0">switch </span><span class="s1">(v.getId()) {</span>
+            <span class="s0">case </span><span class="s1">R.id.main_iv_add:</span>
+                <span class="s1">intent.setClass(</span><span class="s0">this, </span><span class="s1">CityManagerActivity.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s1">R.id.main_iv_more:</span>
+                <span class="s1">intent.setClass(</span><span class="s0">this,</span><span class="s1">MoreActivity.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+        <span class="s1">}</span>
+        <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/* 当页面重写加载时会调用的函数，这个函数在页面获取焦点之前进行调用，此处完成ViewPager页数的更新*/</span>
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onRestart() {</span>
+        <span class="s0">super</span><span class="s1">.onRestart()</span><span class="s0">;</span>
+<span class="s2">//        获取数据库当中还剩下的城市集合</span>
+        <span class="s1">List&lt;String&gt; list = DBManager.queryAllCityName()</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(list.size()==</span><span class="s3">0</span><span class="s1">) {</span>
+            <span class="s1">list.add(</span><span class="s4">&quot;北京&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s1">cityList.clear()</span><span class="s0">;    </span><span class="s2">//重写加载之前，清空原本数据源</span>
+        <span class="s1">cityList.addAll(list)</span><span class="s0">;</span>
+<span class="s2">//        剩余城市也要创建对应的fragment页面</span>
+        <span class="s1">fragmentList.clear()</span><span class="s0">;</span>
+        <span class="s1">initPager()</span><span class="s0">;</span>
+        <span class="s1">adapter.notifyDataSetChanged()</span><span class="s0">;</span>
+<span class="s2">//        页面数量发生改变，指示器的数量也会发生变化，重写设置添加指示器</span>
+        <span class="s1">imgList.clear()</span><span class="s0">;</span>
+        <span class="s1">pointLayout.removeAllViews()</span><span class="s0">;   </span><span class="s2">//将布局当中所有元素全部移除</span>
+        <span class="s1">initPoint()</span><span class="s0">;</span>
+        <span class="s1">mainVp.setCurrentItem(fragmentList.size()-</span><span class="s3">1</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

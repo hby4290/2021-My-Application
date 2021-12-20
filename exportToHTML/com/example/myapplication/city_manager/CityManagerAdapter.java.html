@@ -1,0 +1,109 @@
+<html>
+<head>
+<title>CityManagerAdapter.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+CityManagerAdapter.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.myapplication.city_manager</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.ViewGroup</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.BaseAdapter</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.example.myapplication.R</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.example.myapplication.bean.WeatherBean</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.example.myapplication.db.DatabaseBean</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.gson.Gson</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.text.ParseException</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.text.SimpleDateFormat</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.List</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">CityManagerAdapter </span><span class="s0">extends </span><span class="s1">BaseAdapter{</span>
+    <span class="s1">Context context</span><span class="s0">;</span>
+    <span class="s1">List&lt;DatabaseBean&gt;mDatas</span><span class="s0">;</span>
+
+    <span class="s0">public </span><span class="s1">CityManagerAdapter(Context context</span><span class="s0">, </span><span class="s1">List&lt;DatabaseBean&gt; mDatas) {</span>
+        <span class="s0">this</span><span class="s1">.context = context</span><span class="s0">;</span>
+        <span class="s0">this</span><span class="s1">.mDatas = mDatas</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public int </span><span class="s1">getCount() {</span>
+        <span class="s0">return </span><span class="s1">mDatas.size()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">Object getItem(</span><span class="s0">int </span><span class="s1">position) {</span>
+        <span class="s0">return </span><span class="s1">mDatas.get(position)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public long </span><span class="s1">getItemId(</span><span class="s0">int </span><span class="s1">position) {</span>
+        <span class="s0">return </span><span class="s1">position</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">View getView(</span><span class="s0">int </span><span class="s1">position</span><span class="s0">, </span><span class="s1">View convertView</span><span class="s0">, </span><span class="s1">ViewGroup parent) {</span>
+        <span class="s1">ViewHolder holder = </span><span class="s0">null;</span>
+        <span class="s0">if </span><span class="s1">(convertView == </span><span class="s0">null</span><span class="s1">) {</span>
+            <span class="s1">convertView = LayoutInflater.from(context).inflate(R.layout.item_city_manager</span><span class="s0">,null</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">holder = </span><span class="s0">new </span><span class="s1">ViewHolder(convertView)</span><span class="s0">;</span>
+            <span class="s1">convertView.setTag(holder)</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else</span><span class="s1">{</span>
+            <span class="s1">holder = (ViewHolder) convertView.getTag()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s1">DatabaseBean bean = mDatas.get(position)</span><span class="s0">;</span>
+        <span class="s1">holder.cityTv.setText(bean.getCity())</span><span class="s0">;</span>
+        <span class="s1">WeatherBean weatherBean = </span><span class="s0">new </span><span class="s1">Gson().fromJson(bean.getContent()</span><span class="s0">, </span><span class="s1">WeatherBean.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+<span class="s2">//        获取今日天气情况</span>
+        <span class="s1">WeatherBean.DataBean.ObserveBean dataBean = weatherBean.getData().getObserve()</span><span class="s0">;</span>
+        <span class="s1">holder.conTv.setText(</span><span class="s3">&quot;天气 : &quot;</span><span class="s1">+dataBean.getWeather_short())</span><span class="s0">;</span>
+        <span class="s1">holder.currentTempTv.setText(dataBean.getDegree()+</span><span class="s3">&quot;°C&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">holder.windTv.setText(</span><span class="s3">&quot;湿度 ：&quot;</span><span class="s1">+dataBean.getHumidity()+</span><span class="s3">&quot;% &quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">holder.tempRangeTv.setText(changeTime(dataBean.getUpdate_time()))</span><span class="s0">;</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(ParseException e) {</span>
+            <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">convertView</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">//    时间格式化</span>
+    <span class="s0">private </span><span class="s1">String changeTime(String update_time) </span><span class="s0">throws </span><span class="s1">ParseException {</span>
+        <span class="s1">SimpleDateFormat sf1 = </span><span class="s0">new </span><span class="s1">SimpleDateFormat(</span><span class="s3">&quot;yyyyMMddHHmm&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">SimpleDateFormat sf2 =</span><span class="s0">new </span><span class="s1">SimpleDateFormat(</span><span class="s3">&quot;yyyy-MM-dd HH:mm&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">String sfstr = </span><span class="s3">&quot;&quot;</span><span class="s0">;</span>
+        <span class="s1">sfstr = sf2.format(sf1.parse(update_time))</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">sfstr</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">class </span><span class="s1">ViewHolder{</span>
+        <span class="s1">TextView cityTv</span><span class="s0">,</span><span class="s1">conTv</span><span class="s0">,</span><span class="s1">currentTempTv</span><span class="s0">,</span><span class="s1">windTv</span><span class="s0">,</span><span class="s1">tempRangeTv</span><span class="s0">;</span>
+        <span class="s0">public </span><span class="s1">ViewHolder(View itemView){</span>
+            <span class="s1">cityTv = itemView.findViewById(R.id.item_city_tv_city)</span><span class="s0">;</span>
+            <span class="s1">conTv = itemView.findViewById(R.id.item_city_tv_condition)</span><span class="s0">;</span>
+            <span class="s1">currentTempTv = itemView.findViewById(R.id.item_city_tv_temp)</span><span class="s0">;</span>
+            <span class="s1">windTv = itemView.findViewById(R.id.item_city_wind)</span><span class="s0">;</span>
+            <span class="s1">tempRangeTv = itemView.findViewById(R.id.item_city_temprange)</span><span class="s0">;</span>
+
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

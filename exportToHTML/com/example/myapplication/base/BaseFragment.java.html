@@ -1,0 +1,59 @@
+<html>
+<head>
+<title>BaseFragment.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+BaseFragment.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.myapplication.base</span><span class="s0">;</span>
+
+
+<span class="s0">import </span><span class="s1">org.xutils.common.Callback</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">org.xutils.http.RequestParams</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">org.xutils.x</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.Fragment</span><span class="s0">;</span>
+
+<span class="s2">/*xutils加载网络数据的步骤 
+* 1.声明整体模块 
+*  2.执行网络请求操作 
+* */</span>
+<span class="s0">public class </span><span class="s1">BaseFragment </span><span class="s0">extends </span><span class="s1">Fragment </span><span class="s0">implements </span><span class="s1">Callback.CommonCallback&lt;String&gt;{</span>
+
+    <span class="s0">public void </span><span class="s1">loadData(String path){</span>
+        <span class="s1">RequestParams params = </span><span class="s0">new </span><span class="s1">RequestParams(path)</span><span class="s0">;</span>
+        <span class="s2">//执行网络请求操作</span>
+        <span class="s1">x.http().get(params</span><span class="s0">,this</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s2">//    获取数据成功时，会回调的接口</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onSuccess(String result) {</span>
+
+    <span class="s1">}</span>
+<span class="s2">//  获取数据失败时，会调用的接口</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onError(Throwable ex</span><span class="s0">, boolean </span><span class="s1">isOnCallback) {</span>
+
+    <span class="s1">}</span>
+<span class="s2">//  取消请求时，会调用的接口</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onCancelled(CancelledException cex) {</span>
+
+    <span class="s1">}</span>
+<span class="s2">//  请求完成后，会回调的接口</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onFinished() {</span>
+
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

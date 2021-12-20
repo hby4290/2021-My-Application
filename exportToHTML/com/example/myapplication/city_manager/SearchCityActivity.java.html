@@ -1,0 +1,129 @@
+<html>
+<head>
+<title>SearchCityActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #808080;}
+.s4 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+SearchCityActivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.myapplication.city_manager</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.text.TextUtils</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.AdapterView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ArrayAdapter</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.EditText</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.GridView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.example.myapplication.MainActivity</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.example.myapplication.R</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.example.myapplication.base.BaseActivity</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.example.myapplication.bean.WeatherBean</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.gson.Gson</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">SearchCityActivity </span><span class="s0">extends </span><span class="s1">BaseActivity </span><span class="s0">implements </span><span class="s1">View.OnClickListener{</span>
+    <span class="s1">EditText searchEt</span><span class="s0">;</span>
+    <span class="s1">ImageView submitIv</span><span class="s0">;</span>
+    <span class="s1">GridView searchGv</span><span class="s0">;</span>
+    <span class="s1">String[]hotCitys = {</span><span class="s2">&quot;北京&quot;</span><span class="s0">,</span><span class="s2">&quot;上海&quot;</span><span class="s0">,</span><span class="s2">&quot;广州&quot;</span><span class="s0">,</span><span class="s2">&quot;深圳&quot;</span><span class="s0">,</span><span class="s2">&quot;珠海&quot;</span><span class="s0">,</span><span class="s2">&quot;佛山&quot;</span><span class="s0">,</span><span class="s2">&quot;南京&quot;</span><span class="s0">,</span><span class="s2">&quot;苏州&quot;</span><span class="s0">,</span><span class="s2">&quot;厦门&quot;</span><span class="s0">,</span>
+    <span class="s2">&quot;长沙&quot;</span><span class="s0">,</span><span class="s2">&quot;成都&quot;</span><span class="s0">,</span><span class="s2">&quot;福州&quot;</span><span class="s0">,</span><span class="s2">&quot;杭州&quot;</span><span class="s0">,</span><span class="s2">&quot;武汉&quot;</span><span class="s0">,</span><span class="s2">&quot;青岛&quot;</span><span class="s0">,</span><span class="s2">&quot;西安&quot;</span><span class="s0">,</span><span class="s2">&quot;太原&quot;</span><span class="s0">,</span><span class="s2">&quot;沈阳&quot;</span><span class="s0">,</span><span class="s2">&quot;重庆&quot;</span><span class="s0">,</span><span class="s2">&quot;天津&quot;</span><span class="s0">,</span><span class="s2">&quot;南宁&quot;</span><span class="s1">}</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">ArrayAdapter&lt;String&gt; adapter</span><span class="s0">;</span>
+    <span class="s1">String url1 = </span><span class="s2">&quot;https://wis.qq.com/weather/common?source=pc&amp;weather_type=observe|index|rise|alarm|air|tips|forecast_24h&amp;province=&quot;</span><span class="s0">;</span>
+    <span class="s1">String url2 = </span><span class="s2">&quot;&amp;city=&quot;</span><span class="s0">;</span>
+    <span class="s1">String city</span><span class="s0">;</span>
+    <span class="s1">String provice</span><span class="s0">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_search_city)</span><span class="s0">;</span>
+        <span class="s1">searchEt = findViewById(R.id.search_et)</span><span class="s0">;</span>
+        <span class="s1">submitIv = findViewById(R.id.search_iv_submit)</span><span class="s0">;</span>
+        <span class="s1">searchGv = findViewById(R.id.search_gv)</span><span class="s0">;</span>
+        <span class="s1">submitIv.setOnClickListener(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+<span class="s3">//        设置适配器</span>
+        <span class="s1">adapter = </span><span class="s0">new </span><span class="s1">ArrayAdapter&lt;&gt;(</span><span class="s0">this, </span><span class="s1">R.layout.item_hotcity</span><span class="s0">, </span><span class="s1">hotCitys)</span><span class="s0">;</span>
+        <span class="s1">searchGv.setAdapter(adapter)</span><span class="s0">;</span>
+        <span class="s1">setListener()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s3">/* 设置监听事件*/</span>
+    <span class="s0">private void </span><span class="s1">setListener() {</span>
+        <span class="s1">searchGv.setOnItemClickListener(</span><span class="s0">new </span><span class="s1">AdapterView.OnItemClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onItemClick(AdapterView&lt;?&gt; parent</span><span class="s0">, </span><span class="s1">View view</span><span class="s0">, int </span><span class="s1">position</span><span class="s0">, long </span><span class="s1">id) {</span>
+                <span class="s1">city = hotCitys[position]</span><span class="s0">;</span>
+<span class="s3">//                获取省份</span>
+                <span class="s1">provice=GetProvice(city)</span><span class="s0">;</span>
+                <span class="s1">String url = url1+provice+url2+city</span><span class="s0">;</span>
+                <span class="s1">loadData(url)</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+        <span class="s0">switch </span><span class="s1">(v.getId()) {</span>
+            <span class="s0">case </span><span class="s1">R.id.search_iv_submit:</span>
+                <span class="s1">city = searchEt.getText().toString()</span><span class="s0">;</span>
+                <span class="s0">if </span><span class="s1">(!TextUtils.isEmpty(city)) {</span>
+<span class="s3">//                      判断是否能够找到这个城市</span>
+                    <span class="s1">provice=GetProvice(city)</span><span class="s0">;</span>
+                    <span class="s1">String url = url1+provice+url2+city</span><span class="s0">;</span>
+                    <span class="s1">loadData(url)</span><span class="s0">;</span>
+                <span class="s1">}</span><span class="s0">else </span><span class="s1">{</span>
+                    <span class="s1">Toast.makeText(</span><span class="s0">this,</span><span class="s2">&quot;输入内容不能为空！&quot;</span><span class="s0">,</span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s0">break;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onSuccess(String result) {</span>
+        <span class="s1">WeatherBean weatherBean = </span><span class="s0">new </span><span class="s1">Gson().fromJson(result</span><span class="s0">, </span><span class="s1">WeatherBean.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(weatherBean.getData().getIndex().getClothes()!=</span><span class="s0">null</span><span class="s1">) {</span>
+            <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(</span><span class="s0">this, </span><span class="s1">MainActivity.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+            <span class="s1">intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK)</span><span class="s0">;</span>
+            <span class="s1">city=provice+</span><span class="s2">&quot; &quot;</span><span class="s1">+city</span><span class="s0">;</span>
+            <span class="s1">intent.putExtra(</span><span class="s2">&quot;city&quot;</span><span class="s0">,</span><span class="s1">city)</span><span class="s0">;</span>
+            <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+        <span class="s1">}</span><span class="s0">else</span><span class="s1">{</span>
+            <span class="s1">Toast.makeText(</span><span class="s0">this,</span><span class="s2">&quot;暂时未收入此城市天气信息...&quot;</span><span class="s0">,</span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private </span><span class="s1">String GetProvice(String city) {</span>
+        <span class="s1">String[]Citys = {</span><span class="s2">&quot;北京&quot;</span><span class="s0">,</span><span class="s2">&quot;上海&quot;</span><span class="s0">,</span><span class="s2">&quot;广东省 广州&quot;</span><span class="s0">,</span><span class="s2">&quot;广东省 深圳&quot;</span><span class="s0">,</span><span class="s2">&quot;广东省 珠海&quot;</span><span class="s0">,</span><span class="s2">&quot;广东省 佛山&quot;</span><span class="s0">,</span>
+                <span class="s2">&quot;江苏省 南京&quot;</span><span class="s0">,</span><span class="s2">&quot;江苏省 苏州&quot;</span><span class="s0">,</span><span class="s2">&quot;福建省 厦门&quot;</span><span class="s0">,</span><span class="s2">&quot;湖南省 长沙&quot;</span><span class="s0">,</span><span class="s2">&quot;四川省 成都&quot;</span><span class="s0">,</span><span class="s2">&quot;福建省 福州&quot;</span><span class="s0">,</span><span class="s2">&quot;浙江省 杭州&quot;</span><span class="s0">,</span>
+                <span class="s2">&quot;湖北省 武汉&quot;</span><span class="s0">,</span><span class="s2">&quot;山东省 青岛&quot;</span><span class="s0">,</span><span class="s2">&quot;陕西省 西安&quot;</span><span class="s0">,</span><span class="s2">&quot;山西省 太原&quot;</span><span class="s0">,</span><span class="s2">&quot;辽宁省 沈阳&quot;</span><span class="s0">,</span><span class="s2">&quot;重庆&quot;</span><span class="s0">,</span><span class="s2">&quot;天津&quot;</span><span class="s0">,</span><span class="s2">&quot;广西省 南宁&quot;</span><span class="s1">}</span><span class="s0">;</span>
+        <span class="s0">for</span><span class="s1">(</span><span class="s0">int </span><span class="s1">i=</span><span class="s4">0</span><span class="s0">;</span><span class="s1">i&lt;Citys.length</span><span class="s0">;</span><span class="s1">i++){</span>
+            <span class="s0">if</span><span class="s1">(Citys[i].contains(city)){</span>
+                <span class="s0">if</span><span class="s1">(Citys[i].split(</span><span class="s2">&quot; &quot;</span><span class="s1">).length&gt;</span><span class="s4">1</span><span class="s1">)</span>
+                <span class="s1">{   provice =Citys[i].split(</span><span class="s2">&quot; &quot;</span><span class="s1">)[</span><span class="s4">0</span><span class="s1">]</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s0">else</span>
+                <span class="s1">{</span>
+                    <span class="s1">provice = Citys[i].split(</span><span class="s2">&quot; &quot;</span><span class="s1">)[</span><span class="s4">0</span><span class="s1">]</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s0">break;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">provice</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

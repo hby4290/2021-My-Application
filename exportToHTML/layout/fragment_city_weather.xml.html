@@ -1,0 +1,179 @@
+<html>
+<head>
+<title>fragment_city_weather.xml</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #e8bf6a;}
+.s1 { color: #bababa;}
+.s2 { color: #6a8759;}
+.s3 { color: #a9b7c6;}
+.s4 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+fragment_city_weather.xml</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;?</span><span class="s1">xml version</span><span class="s2">=&quot;1.0&quot; </span><span class="s1">encoding</span><span class="s2">=&quot;utf-8&quot;</span><span class="s0">?&gt;</span>
+<span class="s0">&lt;ScrollView </span><span class="s1">xmlns:android</span><span class="s2">=&quot;http://schemas.android.com/apk/res/android&quot;</span>
+    <span class="s1">android:layout_width</span><span class="s2">=&quot;match_parent&quot;</span>
+    <span class="s1">android:layout_height</span><span class="s2">=&quot;match_parent&quot;</span>
+    <span class="s1">android:background</span><span class="s2">=&quot;@mipmap/bg&quot;</span>
+    <span class="s1">android:id</span><span class="s2">=&quot;@+id/out_layout&quot;</span><span class="s0">&gt;</span>
+
+    <span class="s0">&lt;LinearLayout</span>
+        <span class="s1">android:id</span><span class="s2">=&quot;@+id/frag_layout&quot;</span>
+        <span class="s1">android:orientation</span><span class="s2">=&quot;vertical&quot;</span>
+        <span class="s1">android:layout_width</span><span class="s2">=&quot;match_parent&quot;</span>
+        <span class="s1">android:layout_height</span><span class="s2">=&quot;match_parent&quot; </span><span class="s0">&gt;</span>
+        <span class="s0">&lt;RelativeLayout</span>
+            <span class="s1">android:layout_width</span><span class="s2">=&quot;match_parent&quot;</span>
+            <span class="s1">android:layout_height</span><span class="s2">=&quot;wrap_content&quot;</span>
+            <span class="s1">android:padding</span><span class="s2">=&quot;10dp&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;TextView</span>
+                <span class="s1">android:id</span><span class="s2">=&quot;@+id/frag_tv_currenttemp&quot;</span>
+                <span class="s1">android:layout_width</span><span class="s2">=&quot;wrap_content&quot;</span>
+                <span class="s1">android:layout_height</span><span class="s2">=&quot;wrap_content&quot;</span>
+                <span class="s1">android:text</span><span class="s2">=&quot;3℃&quot;</span>
+                <span class="s1">android:textSize</span><span class="s2">=&quot;40sp&quot;</span>
+                <span class="s1">android:textStyle</span><span class="s2">=&quot;bold&quot;</span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;TextView</span>
+                <span class="s1">android:id</span><span class="s2">=&quot;@+id/frag_tv_city&quot;</span>
+                <span class="s1">style</span><span class="s2">=&quot;@style/todaytext&quot;</span>
+                <span class="s1">android:text</span><span class="s2">=&quot;广东省 深圳&quot;</span>
+                <span class="s1">android:layout_below</span><span class="s2">=&quot;@id/frag_tv_currenttemp&quot;</span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;TextView</span>
+                <span class="s1">android:id</span><span class="s2">=&quot;@+id/frag_tv_condition&quot;</span>
+                <span class="s1">style</span><span class="s2">=&quot;@style/todaytext&quot;</span>
+                <span class="s1">android:text</span><span class="s2">=&quot;晴&quot;</span>
+                <span class="s1">android:layout_below</span><span class="s2">=&quot;@id/frag_tv_city&quot;</span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;TextView</span>
+                <span class="s1">android:id</span><span class="s2">=&quot;@+id/frag_tv_date&quot;</span>
+                <span class="s1">android:text</span><span class="s2">=&quot;2019-11-05&quot;</span>
+                <span class="s1">android:layout_below</span><span class="s2">=&quot;@id/frag_tv_condition&quot;</span>
+                <span class="s1">android:layout_marginTop</span><span class="s2">=&quot;10dp&quot;</span>
+                <span class="s1">style</span><span class="s2">=&quot;@style/todaytext&quot; </span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;TextView</span>
+                <span class="s1">android:id</span><span class="s2">=&quot;@+id/frag_tv_wind&quot;</span>
+                <span class="s1">style</span><span class="s2">=&quot;@style/todaytext&quot;</span>
+                <span class="s1">android:layout_below</span><span class="s2">=&quot;@id/frag_tv_date&quot;</span>
+                <span class="s1">android:layout_marginTop</span><span class="s2">=&quot;5dp&quot;</span>
+                <span class="s1">android:text</span><span class="s2">=&quot;湿度 83%&quot;</span>
+                <span class="s0">/&gt;</span>
+            <span class="s0">&lt;TextView</span>
+                <span class="s1">android:id</span><span class="s2">=&quot;@+id/frag_tv_line1&quot;</span>
+                <span class="s1">android:layout_width</span><span class="s2">=&quot;2dp&quot;</span>
+                <span class="s1">android:layout_height</span><span class="s2">=&quot;25dp&quot;</span>
+                <span class="s1">android:layout_toRightOf</span><span class="s2">=&quot;@id/frag_tv_wind&quot;</span>
+                <span class="s1">android:background</span><span class="s2">=&quot;#2E8B40&quot;</span>
+                <span class="s1">android:layout_alignBottom</span><span class="s2">=&quot;@id/frag_tv_wind&quot;</span>
+                <span class="s1">android:layout_marginLeft</span><span class="s2">=&quot;10dp&quot;</span>
+                <span class="s1">android:layout_marginRight</span><span class="s2">=&quot;10dp&quot;</span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;TextView</span>
+                <span class="s1">android:id</span><span class="s2">=&quot;@+id/frag_tv_temprange&quot;</span>
+                <span class="s1">style</span><span class="s2">=&quot;@style/todaytext&quot;</span>
+                <span class="s1">android:text</span><span class="s2">=&quot;气压 1003hPa&quot;</span>
+                <span class="s1">android:layout_toRightOf</span><span class="s2">=&quot;@id/frag_tv_line1&quot;</span>
+                <span class="s1">android:layout_alignBottom</span><span class="s2">=&quot;@id/frag_tv_wind&quot;</span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;TextView</span>
+                <span class="s1">android:id</span><span class="s2">=&quot;@+id/frag_tv_tips&quot;</span>
+                <span class="s1">style</span><span class="s2">=&quot;@style/todaytext&quot;</span>
+                <span class="s1">android:text</span><span class="s2">=&quot;天暗下来，你就是阳光~&quot;</span>
+                <span class="s1">android:layout_below</span><span class="s2">=&quot;@+id/frag_tv_line1&quot;</span>
+                <span class="s1">android:layout_marginTop</span><span class="s2">=&quot;8dp&quot;</span>
+                <span class="s0">/&gt;</span>
+
+            <span class="s0">&lt;ImageView</span>
+                <span class="s1">android:layout_width</span><span class="s2">=&quot;120dp&quot;</span>
+                <span class="s1">android:layout_height</span><span class="s2">=&quot;120dp&quot;</span>
+                <span class="s1">android:id</span><span class="s2">=&quot;@+id/frag_iv_today&quot;</span>
+                <span class="s1">android:scaleType</span><span class="s2">=&quot;centerCrop&quot;</span>
+                <span class="s1">android:layout_alignParentRight</span><span class="s2">=&quot;true&quot;</span>
+                <span class="s1">android:src</span><span class="s2">=&quot;@mipmap/icon&quot;</span><span class="s0">/&gt;</span>
+        <span class="s0">&lt;/RelativeLayout&gt;</span>
+        <span class="s4">&lt;!-- 用于显示未来三天的天气情况--&gt;</span>
+        <span class="s0">&lt;LinearLayout</span>
+            <span class="s1">android:id</span><span class="s2">=&quot;@+id/frag_center_layout&quot;</span>
+            <span class="s1">android:layout_width</span><span class="s2">=&quot;match_parent&quot;</span>
+            <span class="s1">android:layout_height</span><span class="s2">=&quot;wrap_content&quot;</span>
+            <span class="s1">android:orientation</span><span class="s2">=&quot;vertical&quot;</span>
+            <span class="s1">android:padding</span><span class="s2">=&quot;10dp&quot;</span>
+            <span class="s1">android:layout_margin</span><span class="s2">=&quot;10dp&quot;</span>
+            <span class="s1">android:background</span><span class="s2">=&quot;@drawable/frag_bg&quot;</span>
+            <span class="s0">&gt;&lt;/LinearLayout&gt;</span>
+        <span class="s4">&lt;!-- 用于表示指数信息的线性布局--&gt;</span>
+        <span class="s0">&lt;LinearLayout</span>
+            <span class="s1">android:id</span><span class="s2">=&quot;@+id/frag_index_layout&quot;</span>
+            <span class="s1">android:layout_width</span><span class="s2">=&quot;match_parent&quot;</span>
+            <span class="s1">android:layout_height</span><span class="s2">=&quot;wrap_content&quot;</span>
+            <span class="s1">android:orientation</span><span class="s2">=&quot;vertical&quot;</span>
+            <span class="s1">android:background</span><span class="s2">=&quot;@drawable/frag_bg&quot;</span>
+            <span class="s1">android:layout_margin</span><span class="s2">=&quot;10dp&quot;</span>
+            <span class="s1">android:padding</span><span class="s2">=&quot;10dp&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;LinearLayout</span>
+                <span class="s1">android:layout_width</span><span class="s2">=&quot;match_parent&quot;</span>
+                <span class="s1">android:layout_height</span><span class="s2">=&quot;wrap_content&quot;</span>
+                <span class="s1">android:orientation</span><span class="s2">=&quot;horizontal&quot;</span><span class="s0">&gt;</span>
+                <span class="s0">&lt;TextView</span>
+                    <span class="s1">android:id</span><span class="s2">=&quot;@+id/frag_index_tv_dress&quot;</span>
+                    <span class="s1">style</span><span class="s2">=&quot;@style/indextext&quot;</span>
+                    <span class="s1">android:text</span><span class="s2">=&quot;穿衣指数&quot;</span>
+                    <span class="s1">android:drawableBottom</span><span class="s2">=&quot;@mipmap/icon_cloth&quot;</span><span class="s0">/&gt;</span>
+                <span class="s0">&lt;ImageView</span>
+                    <span class="s1">android:layout_width</span><span class="s2">=&quot;1dp&quot;</span>
+                    <span class="s1">android:layout_height</span><span class="s2">=&quot;match_parent&quot;</span>
+                    <span class="s1">android:background</span><span class="s2">=&quot;#2E8B57&quot;</span><span class="s0">/&gt;</span>
+                <span class="s0">&lt;TextView</span>
+                    <span class="s1">android:id</span><span class="s2">=&quot;@+id/frag_index_tv_washcar&quot;</span>
+                    <span class="s1">style</span><span class="s2">=&quot;@style/indextext&quot;</span>
+                    <span class="s1">android:text</span><span class="s2">=&quot;洗车指数&quot;</span>
+                    <span class="s1">android:drawableBottom</span><span class="s2">=&quot;@mipmap/icon_car&quot;</span><span class="s0">/&gt;</span>
+                <span class="s0">&lt;ImageView</span>
+                    <span class="s1">android:layout_width</span><span class="s2">=&quot;1dp&quot;</span>
+                    <span class="s1">android:layout_height</span><span class="s2">=&quot;match_parent&quot;</span>
+                    <span class="s1">android:background</span><span class="s2">=&quot;#2E8B57&quot;</span><span class="s0">/&gt;</span>
+                <span class="s0">&lt;TextView</span>
+                    <span class="s1">android:id</span><span class="s2">=&quot;@+id/frag_index_tv_cold&quot;</span>
+                    <span class="s1">style</span><span class="s2">=&quot;@style/indextext&quot;</span>
+                    <span class="s1">android:text</span><span class="s2">=&quot;感冒指数&quot;</span>
+                    <span class="s1">android:drawableBottom</span><span class="s2">=&quot;@mipmap/icon_ganmao&quot;</span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;/LinearLayout&gt;</span>
+            <span class="s0">&lt;ImageView</span>
+                <span class="s1">android:layout_width</span><span class="s2">=&quot;match_parent&quot;</span>
+                <span class="s1">android:layout_height</span><span class="s2">=&quot;2dp&quot;</span>
+                <span class="s1">android:background</span><span class="s2">=&quot;#2E8B57&quot;</span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;LinearLayout</span>
+                <span class="s1">android:layout_width</span><span class="s2">=&quot;match_parent&quot;</span>
+                <span class="s1">android:layout_height</span><span class="s2">=&quot;wrap_content&quot;</span>
+                <span class="s1">android:orientation</span><span class="s2">=&quot;horizontal&quot;</span><span class="s0">&gt;</span>
+                <span class="s0">&lt;TextView</span>
+                    <span class="s1">android:id</span><span class="s2">=&quot;@+id/frag_index_tv_sport&quot;</span>
+                    <span class="s1">style</span><span class="s2">=&quot;@style/indextext&quot;</span>
+                    <span class="s1">android:text</span><span class="s2">=&quot;运动指数&quot;</span>
+                    <span class="s1">android:drawableBottom</span><span class="s2">=&quot;@mipmap/icon_sport&quot;</span><span class="s0">/&gt;</span>
+                <span class="s0">&lt;ImageView</span>
+                    <span class="s1">android:layout_width</span><span class="s2">=&quot;1dp&quot;</span>
+                    <span class="s1">android:layout_height</span><span class="s2">=&quot;match_parent&quot;</span>
+                    <span class="s1">android:background</span><span class="s2">=&quot;#2E8B57&quot;</span><span class="s0">/&gt;</span>
+                <span class="s0">&lt;TextView</span>
+                    <span class="s1">android:id</span><span class="s2">=&quot;@+id/frag_index_tv_rays&quot;</span>
+                    <span class="s1">style</span><span class="s2">=&quot;@style/indextext&quot;</span>
+                    <span class="s1">android:text</span><span class="s2">=&quot;紫外线指数&quot;</span>
+                    <span class="s1">android:drawableBottom</span><span class="s2">=&quot;@mipmap/icon_light&quot;</span><span class="s0">/&gt;</span>
+                <span class="s0">&lt;ImageView</span>
+                    <span class="s1">android:layout_width</span><span class="s2">=&quot;1dp&quot;</span>
+                    <span class="s1">android:layout_height</span><span class="s2">=&quot;match_parent&quot;</span>
+                    <span class="s1">android:background</span><span class="s2">=&quot;#2E8B57&quot;</span><span class="s0">/&gt;</span>
+                <span class="s0">&lt;TextView</span>
+                    <span class="s1">android:id</span><span class="s2">=&quot;@+id/frag_index_tv_umbrella&quot;</span>
+                    <span class="s1">style</span><span class="s2">=&quot;@style/indextext&quot;</span>
+                    <span class="s1">android:text</span><span class="s2">=&quot;雨伞指数&quot;</span>
+                    <span class="s1">android:drawableBottom</span><span class="s2">=&quot;@mipmap/icon_umbrella&quot;</span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;/LinearLayout&gt;</span>
+        <span class="s0">&lt;/LinearLayout&gt;</span>
+    <span class="s0">&lt;/LinearLayout&gt;</span>
+<span class="s0">&lt;/ScrollView&gt;</span></pre>
+</body>
+</html>

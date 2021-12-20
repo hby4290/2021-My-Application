@@ -1,0 +1,90 @@
+<html>
+<head>
+<title>CityManagerActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6897bb;}
+.s4 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+CityManagerActivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.myapplication.city_manager</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ListView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.example.myapplication.R</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.example.myapplication.db.DBManager</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.example.myapplication.db.DatabaseBean</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.List</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">CityManagerActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity </span><span class="s0">implements </span><span class="s1">View.OnClickListener{</span>
+    <span class="s1">ImageView addIv</span><span class="s0">,</span><span class="s1">backIv</span><span class="s0">,</span><span class="s1">deleteIv</span><span class="s0">;</span>
+    <span class="s1">ListView cityLv</span><span class="s0">;</span>
+    <span class="s1">List&lt;DatabaseBean&gt; mDatas</span><span class="s0">;  </span><span class="s2">//显示列表数据源</span>
+    <span class="s0">private </span><span class="s1">CityManagerAdapter adapter</span><span class="s0">;</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_city_manager)</span><span class="s0">;</span>
+        <span class="s1">addIv = findViewById(R.id.city_iv_add)</span><span class="s0">;</span>
+        <span class="s1">backIv = findViewById(R.id.city_iv_back)</span><span class="s0">;</span>
+        <span class="s1">deleteIv = findViewById(R.id.city_iv_delete)</span><span class="s0">;</span>
+        <span class="s1">cityLv = findViewById(R.id.city_lv)</span><span class="s0">;</span>
+        <span class="s1">mDatas = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+<span class="s2">//        添加点击监听事件</span>
+        <span class="s1">addIv.setOnClickListener(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">deleteIv.setOnClickListener(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">backIv.setOnClickListener(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+<span class="s2">//        设置适配器</span>
+        <span class="s1">adapter = </span><span class="s0">new </span><span class="s1">CityManagerAdapter(</span><span class="s0">this, </span><span class="s1">mDatas)</span><span class="s0">;</span>
+        <span class="s1">cityLv.setAdapter(adapter)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s2">/*  获取数据库当中真实数据源，添加到原有数据源当中，提示适配器更新*/</span>
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onResume() {</span>
+        <span class="s0">super</span><span class="s1">.onResume()</span><span class="s0">;</span>
+        <span class="s1">List&lt;DatabaseBean&gt; list = DBManager.queryAllInfo()</span><span class="s0">;</span>
+        <span class="s1">mDatas.clear()</span><span class="s0">;</span>
+        <span class="s1">mDatas.addAll(list)</span><span class="s0">;</span>
+        <span class="s1">adapter.notifyDataSetChanged()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+        <span class="s0">switch </span><span class="s1">(v.getId()) {</span>
+            <span class="s0">case </span><span class="s1">R.id.city_iv_add:</span>
+                <span class="s0">int </span><span class="s1">cityCount = DBManager.getCityCount()</span><span class="s0">;</span>
+                <span class="s0">if </span><span class="s1">(cityCount&lt;</span><span class="s3">5</span><span class="s1">) {</span>
+                    <span class="s1">Intent intent = </span><span class="s0">new </span><span class="s1">Intent(</span><span class="s0">this, </span><span class="s1">SearchCityActivity.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                    <span class="s1">startActivity(intent)</span><span class="s0">;</span>
+                <span class="s1">}</span><span class="s0">else </span><span class="s1">{</span>
+                    <span class="s1">Toast.makeText(</span><span class="s0">this,</span><span class="s4">&quot;存储城市数量已达上限，请删除后再增加&quot;</span><span class="s0">,</span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span>
+                <span class="s1">}</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s1">R.id.city_iv_back:</span>
+                <span class="s1">finish()</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s1">R.id.city_iv_delete:</span>
+                <span class="s1">Intent intent1 = </span><span class="s0">new </span><span class="s1">Intent(</span><span class="s0">this, </span><span class="s1">DeleteCityActivity.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">startActivity(intent1)</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<html>
+<head>
+<title>DBManager.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6a8759;}
+.s4 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+DBManager.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.myapplication.db</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.ContentValues</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.database.Cursor</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.database.sqlite.SQLiteDatabase</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.List</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">DBManager {</span>
+    <span class="s0">public static </span><span class="s1">SQLiteDatabase database</span><span class="s0">;</span>
+    <span class="s2">/* 初始化数据库信息*/</span>
+    <span class="s0">public static void </span><span class="s1">initDB(Context context){</span>
+        <span class="s2">//创建数据库辅助对象，传入context</span>
+        <span class="s1">DBHelper dbHelper = </span><span class="s0">new </span><span class="s1">DBHelper(context)</span><span class="s0">;</span>
+        <span class="s1">database = dbHelper.getWritableDatabase()</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s2">/* 查找数据库当中城市列表*/</span>
+    <span class="s0">public static </span><span class="s1">List&lt;String&gt;queryAllCityName(){</span>
+        <span class="s1">Cursor cursor = database.query(</span><span class="s3">&quot;info&quot;</span><span class="s0">, null, null, null, null, null,null</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">List&lt;String&gt;cityList = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s0">while </span><span class="s1">(cursor.moveToNext()) {</span>
+            <span class="s1">String city = cursor.getString(cursor.getColumnIndex(</span><span class="s3">&quot;city&quot;</span><span class="s1">))</span><span class="s0">;</span>
+            <span class="s1">cityList.add(city)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">cityList</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s2">/* 根据城市名称，替换信息内容*/</span>
+    <span class="s0">public static int </span><span class="s1">updateInfoByCity(String city</span><span class="s0">,</span><span class="s1">String content){</span>
+        <span class="s1">ContentValues values = </span><span class="s0">new </span><span class="s1">ContentValues()</span><span class="s0">;</span>
+        <span class="s1">values.put(</span><span class="s3">&quot;content&quot;</span><span class="s0">,</span><span class="s1">content)</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">database.update(</span><span class="s3">&quot;info&quot;</span><span class="s0">,</span><span class="s1">values</span><span class="s0">,</span><span class="s3">&quot;city=?&quot;</span><span class="s0">,new </span><span class="s1">String[]{city})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s2">/* 新增一条城市记录*/</span>
+    <span class="s0">public static long </span><span class="s1">addCityInfo(String city</span><span class="s0">,</span><span class="s1">String content){</span>
+        <span class="s1">ContentValues values = </span><span class="s0">new </span><span class="s1">ContentValues()</span><span class="s0">;</span>
+        <span class="s1">values.put(</span><span class="s3">&quot;city&quot;</span><span class="s0">,</span><span class="s1">city)</span><span class="s0">;</span>
+        <span class="s1">values.put(</span><span class="s3">&quot;content&quot;</span><span class="s0">,</span><span class="s1">content)</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">database.insert(</span><span class="s3">&quot;info&quot;</span><span class="s0">,null,</span><span class="s1">values)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s2">/* 根据城市名，查询数据库当中的内容*/</span>
+    <span class="s0">public static </span><span class="s1">String queryInfoByCity(String city){</span>
+        <span class="s1">Cursor cursor = database.query(</span><span class="s3">&quot;info&quot;</span><span class="s0">, null, </span><span class="s3">&quot;city=?&quot;</span><span class="s0">, new </span><span class="s1">String[]{city}</span><span class="s0">, null, null, null</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(cursor.getCount()&gt;</span><span class="s4">0</span><span class="s1">) {</span>
+            <span class="s1">cursor.moveToFirst()</span><span class="s0">;</span>
+            <span class="s1">String content = cursor.getString(cursor.getColumnIndex(</span><span class="s3">&quot;content&quot;</span><span class="s1">))</span><span class="s0">;</span>
+            <span class="s0">return </span><span class="s1">content</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">return null;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/* 存储城市天气要求最多存储5个城市的信息，一旦超过5个城市就不能存储了，获取目前已经存储的数量*/</span>
+    <span class="s0">public static int </span><span class="s1">getCityCount(){</span>
+        <span class="s1">Cursor cursor = database.query(</span><span class="s3">&quot;info&quot;</span><span class="s0">, null, null, null, null, null, null</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">int </span><span class="s1">count = cursor.getCount()</span><span class="s0">;</span>
+        <span class="s0">return </span><span class="s1">count</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/* 查询数据库当中的全部信息*/</span>
+    <span class="s0">public static </span><span class="s1">List&lt;DatabaseBean&gt;queryAllInfo(){</span>
+        <span class="s1">Cursor cursor = database.query(</span><span class="s3">&quot;info&quot;</span><span class="s0">, null, null, null, null, null, null</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">List&lt;DatabaseBean&gt;list = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s0">while </span><span class="s1">(cursor.moveToNext()) {</span>
+            <span class="s0">int </span><span class="s1">id = cursor.getInt(cursor.getColumnIndex(</span><span class="s3">&quot;_id&quot;</span><span class="s1">))</span><span class="s0">;</span>
+            <span class="s1">String city = cursor.getString(cursor.getColumnIndex(</span><span class="s3">&quot;city&quot;</span><span class="s1">))</span><span class="s0">;</span>
+            <span class="s1">String content = cursor.getString(cursor.getColumnIndex(</span><span class="s3">&quot;content&quot;</span><span class="s1">))</span><span class="s0">;</span>
+            <span class="s1">DatabaseBean bean = </span><span class="s0">new </span><span class="s1">DatabaseBean(id</span><span class="s0">, </span><span class="s1">city</span><span class="s0">, </span><span class="s1">content)</span><span class="s0">;</span>
+            <span class="s1">list.add(bean)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">return </span><span class="s1">list</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/* 根据城市名称，删除这个城市在数据库当中的数据*/</span>
+    <span class="s0">public static int </span><span class="s1">deleteInfoByCity(String city){</span>
+        <span class="s0">return </span><span class="s1">database.delete(</span><span class="s3">&quot;info&quot;</span><span class="s0">,</span><span class="s3">&quot;city=?&quot;</span><span class="s0">,new </span><span class="s1">String[]{city})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s2">/* 删除表当中所有的数据信息*/</span>
+    <span class="s0">public static void </span><span class="s1">deleteAllInfo(){</span>
+        <span class="s1">String sql = </span><span class="s3">&quot;delete from info&quot;</span><span class="s0">;</span>
+        <span class="s1">database.execSQL(sql)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

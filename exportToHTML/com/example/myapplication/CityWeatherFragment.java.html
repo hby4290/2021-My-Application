@@ -1,0 +1,295 @@
+<html>
+<head>
+<title>CityWeatherFragment.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #629755; font-style: italic;}
+.s3 { color: #629755; font-weight: bold; font-style: italic;}
+.s4 { color: #808080;}
+.s5 { color: #6a8759;}
+.s6 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+CityWeatherFragment.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.myapplication</span><span class="s0">;</span>
+
+
+<span class="s0">import </span><span class="s1">android.app.AlertDialog</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.content.SharedPreferences</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.text.TextUtils</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.LayoutInflater</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.ViewGroup</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ImageView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.LinearLayout</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ScrollView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.TextView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.example.myapplication.base.BaseFragment</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.example.myapplication.bean.WeatherBean</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.example.myapplication.db.DBManager</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.gson.Gson</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.squareup.picasso.Picasso</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.text.ParseException</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.text.SimpleDateFormat</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.fragment.app.Fragment</span><span class="s0">;</span>
+
+<span class="s0">import static </span><span class="s1">android.content.Context.MODE_PRIVATE</span><span class="s0">;</span>
+
+
+<span class="s2">/**</span>
+ <span class="s2">* A simple {</span><span class="s3">@link </span><span class="s2">Fragment} subclass.</span>
+ <span class="s2">*/</span>
+<span class="s0">public class </span><span class="s1">CityWeatherFragment </span><span class="s0">extends </span><span class="s1">BaseFragment </span><span class="s0">implements </span><span class="s1">View.OnClickListener{</span>
+    <span class="s1">TextView tempTv</span><span class="s0">,</span><span class="s1">cityTv</span><span class="s0">,</span><span class="s1">conditionTv</span><span class="s0">,</span><span class="s1">windTv</span><span class="s0">,</span><span class="s1">tempRangeTv</span><span class="s0">,</span><span class="s1">dateTv</span><span class="s0">,</span><span class="s1">clothIndexTv</span><span class="s0">,</span><span class="s1">carIndexTv</span><span class="s0">,</span><span class="s1">coldIndexTv</span><span class="s0">,</span><span class="s1">sportIndexTv</span><span class="s0">,</span><span class="s1">raysIndexTv</span><span class="s0">,</span><span class="s1">tipTv</span><span class="s0">,</span><span class="s1">umbrellaTv</span><span class="s0">;</span>
+    <span class="s1">ImageView dayIv</span><span class="s0">;</span>
+    <span class="s1">LinearLayout futureLayout</span><span class="s0">;</span>
+    <span class="s1">ScrollView outLayout</span><span class="s0">;</span>
+    <span class="s4">//api地址</span>
+    <span class="s1">String url1 = </span><span class="s5">&quot;https://wis.qq.com/weather/common?source=pc&amp;weather_type=observe|index|rise|alarm|air|tips|forecast_24h&amp;province=&quot;</span><span class="s0">;</span>
+    <span class="s1">String url2 = </span><span class="s5">&quot;&amp;city=&quot;</span><span class="s0">;</span>
+    <span class="s1">String city</span><span class="s0">;</span>
+    <span class="s1">String provice</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">WeatherBean.DataBean.IndexBean index</span><span class="s0">;</span>
+    <span class="s0">private </span><span class="s1">SharedPreferences pref</span><span class="s0">;</span>
+    <span class="s0">private int </span><span class="s1">bgNum</span><span class="s0">;</span>
+
+    <span class="s4">//        换壁纸的函数</span>
+    <span class="s0">public void </span><span class="s1">exchangeBg(){</span>
+        <span class="s1">pref = getActivity().getSharedPreferences(</span><span class="s5">&quot;bg_pref&quot;</span><span class="s0">, </span><span class="s1">MODE_PRIVATE)</span><span class="s0">;</span>
+        <span class="s1">bgNum = pref.getInt(</span><span class="s5">&quot;bg&quot;</span><span class="s0">, </span><span class="s6">2</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s0">switch </span><span class="s1">(bgNum) {</span>
+            <span class="s0">case </span><span class="s6">0</span><span class="s1">:</span>
+                <span class="s1">outLayout.setBackgroundResource(R.mipmap.bg)</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s6">1</span><span class="s1">:</span>
+                <span class="s1">outLayout.setBackgroundResource(R.mipmap.bg2)</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s6">2</span><span class="s1">:</span>
+                <span class="s1">outLayout.setBackgroundResource(R.mipmap.bg3)</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+        <span class="s1">}</span>
+
+    <span class="s1">}</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">View onCreateView(LayoutInflater inflater</span><span class="s0">, </span><span class="s1">ViewGroup container</span><span class="s0">,</span>
+                             <span class="s1">Bundle savedInstanceState) {</span>
+        <span class="s1">View view = inflater.inflate(R.layout.fragment_city_weather</span><span class="s0">, </span><span class="s1">container</span><span class="s0">, false</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">initView(view)</span><span class="s0">;</span>
+        <span class="s1">exchangeBg()</span><span class="s0">;</span>
+        <span class="s4">//可以通过activity传值获取到当前fragment加载的是那个地方的省份和天气情况</span>
+        <span class="s1">Bundle bundle = getArguments()</span><span class="s0">;</span>
+        <span class="s1">String provice_city = bundle.getString(</span><span class="s5">&quot;city&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s4">//获取省份</span>
+        <span class="s0">if</span><span class="s1">(provice_city.split(</span><span class="s5">&quot; &quot;</span><span class="s1">).length&gt;</span><span class="s6">1</span><span class="s1">)</span>
+        <span class="s1">{   provice =provice_city.split(</span><span class="s5">&quot; &quot;</span><span class="s1">)[</span><span class="s6">0</span><span class="s1">]</span><span class="s0">;</span>
+            <span class="s1">city = provice_city.split(</span><span class="s5">&quot; &quot;</span><span class="s1">)[</span><span class="s6">1</span><span class="s1">]</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s0">else</span>
+        <span class="s1">{</span>
+            <span class="s1">city = provice_city.split(</span><span class="s5">&quot; &quot;</span><span class="s1">)[</span><span class="s6">0</span><span class="s1">]</span><span class="s0">;</span>
+            <span class="s1">provice = provice_city.split(</span><span class="s5">&quot; &quot;</span><span class="s1">)[</span><span class="s6">0</span><span class="s1">]</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s4">//拼接网址</span>
+        <span class="s1">String url = url1+provice+url2+city</span><span class="s0">;</span>
+<span class="s4">//          调用父类获取数据的方法</span>
+        <span class="s1">loadData(url)</span><span class="s0">;</span><span class="s4">//成功的话会走父类的ONSUCCESS方法</span>
+        <span class="s0">return </span><span class="s1">view</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onSuccess(String result) {</span>
+<span class="s4">//        解析并展示数据</span>
+        <span class="s0">try </span><span class="s1">{</span>
+            <span class="s1">parseShowData(result)</span><span class="s0">;</span>
+        <span class="s1">} </span><span class="s0">catch </span><span class="s1">(ParseException e) {</span>
+            <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+        <span class="s1">}</span>
+<span class="s4">//         更新数据</span>
+        <span class="s0">int </span><span class="s1">i = DBManager.updateInfoByCity(city</span><span class="s0">, </span><span class="s1">result)</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(i&lt;=</span><span class="s6">0</span><span class="s1">) {</span>
+<span class="s4">//            更新数据库失败，说明没有这条城市信息，增加这个城市记录</span>
+            <span class="s1">DBManager.addCityInfo(city</span><span class="s0">,</span><span class="s1">result)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onError(Throwable ex</span><span class="s0">, boolean </span><span class="s1">isOnCallback) {</span>
+<span class="s4">//        数据库当中查找上一次信息显示在Fragment当中</span>
+        <span class="s1">String s = DBManager.queryInfoByCity(city)</span><span class="s0">;</span>
+        <span class="s0">if </span><span class="s1">(!TextUtils.isEmpty(s)) {</span>
+            <span class="s0">try </span><span class="s1">{</span>
+                <span class="s1">parseShowData(s)</span><span class="s0">;</span>
+            <span class="s1">} </span><span class="s0">catch </span><span class="s1">(ParseException e) {</span>
+                <span class="s1">e.printStackTrace()</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+
+    <span class="s1">}</span>
+    <span class="s0">private void </span><span class="s1">parseShowData(String result) </span><span class="s0">throws </span><span class="s1">ParseException {</span>
+<span class="s4">//        使用gson解析数据，解析为weatherbean类</span>
+        <span class="s1">WeatherBean weatherBean = </span><span class="s0">new </span><span class="s1">Gson().fromJson(result</span><span class="s0">, </span><span class="s1">WeatherBean.</span><span class="s0">class</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">WeatherBean.DataBean resultsBean = weatherBean.getData()</span><span class="s0">;</span>
+        <span class="s4">//获取指数信息集合列表</span>
+        <span class="s1">index = resultsBean.getIndex()</span><span class="s0">;</span>
+<span class="s4">//        设置TextView</span>
+        <span class="s1">cityTv.setText(city)</span><span class="s0">;</span><span class="s4">//获取城市信息</span>
+        <span class="s1">tipTv.setText(resultsBean.getTips().getObserve().get_$0())</span><span class="s0">;</span>
+<span class="s4">//        获取今日天气情况</span>
+        <span class="s1">WeatherBean.DataBean.ObserveBean todayDataBean = resultsBean.getObserve()</span><span class="s0">;</span>
+        <span class="s1">String time = changeTime(todayDataBean.getUpdate_time())</span><span class="s0">;</span>
+        <span class="s1">dateTv.setText(</span><span class="s5">&quot;发布时间  &quot;</span><span class="s1">+time)</span><span class="s0">;</span>
+        <span class="s1">windTv.setText(</span><span class="s5">&quot;湿度 &quot;</span><span class="s1">+todayDataBean.getHumidity()+</span><span class="s5">&quot;%&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s4">//设置风向</span>
+        <span class="s1">tempRangeTv.setText(</span><span class="s5">&quot;气压  &quot;</span><span class="s1">+todayDataBean.getPressure()+</span><span class="s5">&quot;hPa&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">conditionTv.setText(todayDataBean.getWeather_short())</span><span class="s0">;</span>
+<span class="s4">//        获取实时天气温度情况，需要处理字符串，网址中的实时天气格式比较复杂需要处理一下</span>
+        <span class="s4">//腾讯的api提供的数据格式比百度的简单就不用进行分割了</span>
+        <span class="s1">tempTv.setText(todayDataBean.getDegree()+</span><span class="s5">&quot;°C&quot;</span><span class="s1">)</span><span class="s0">;</span>
+<span class="s4">//        获取未来三天的天气情况，加载到layout当中</span>
+        <span class="s1">WeatherBean.DataBean.Forecast24hBean futureList = resultsBean.getForecast_24h()</span><span class="s0">;</span>
+        <span class="s4">//for (int i = 0; i &lt; futureList,size(); i++) {</span>
+        <span class="s1">View itemView = LayoutInflater.from(getActivity()).inflate(R.layout.item_main_center</span><span class="s0">, null</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">itemView.setLayoutParams(</span><span class="s0">new </span><span class="s1">LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT</span><span class="s0">, </span><span class="s1">LinearLayout.LayoutParams.WRAP_CONTENT))</span><span class="s0">;</span>
+        <span class="s4">//向布局中添加</span>
+        <span class="s1">futureLayout.addView(itemView)</span><span class="s0">;</span>
+        <span class="s1">TextView idateTv = itemView.findViewById(R.id.item_center_tv_date)</span><span class="s0">;</span>
+        <span class="s1">TextView iconTv = itemView.findViewById(R.id.item_center_tv_con)</span><span class="s0">;</span>
+        <span class="s1">TextView itemprangeTv = itemView.findViewById(R.id.item_center_tv_temp)</span><span class="s0">;</span>
+        <span class="s1">TextView wind = itemView.findViewById(R.id.item_center_tv_winddirection)</span><span class="s0">;</span>
+<span class="s4">//          获取对应的位置的天气情况</span>
+        <span class="s1">idateTv.setText(futureList.get_$2().getTime()+</span><span class="s5">&quot;   明天&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">iconTv.setText(futureList.get_$2().getDay_weather())</span><span class="s0">;</span>
+        <span class="s1">wind.setText(futureList.get_$2().getDay_wind_direction())</span><span class="s0">;</span>
+        <span class="s1">itemprangeTv.setText(futureList.get_$2().getMin_degree()+</span><span class="s5">&quot;~&quot;</span><span class="s1">+futureList.get_$2().getMax_degree()+</span><span class="s5">&quot;°C&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">View itemView3 = LayoutInflater.from(getActivity()).inflate(R.layout.item_main_center</span><span class="s0">, null</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">itemView.setLayoutParams(</span><span class="s0">new </span><span class="s1">LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT</span><span class="s0">, </span><span class="s1">LinearLayout.LayoutParams.WRAP_CONTENT))</span><span class="s0">;</span>
+        <span class="s1">futureLayout.addView(itemView3)</span><span class="s0">;</span>
+        <span class="s1">TextView idateTv3 = itemView3.findViewById(R.id.item_center_tv_date)</span><span class="s0">;</span>
+        <span class="s1">TextView iconTv3 = itemView3.findViewById(R.id.item_center_tv_con)</span><span class="s0">;</span>
+        <span class="s1">TextView itemprangeTv3 = itemView3.findViewById(R.id.item_center_tv_temp)</span><span class="s0">;</span>
+        <span class="s1">TextView wind3 = itemView3.findViewById(R.id.item_center_tv_winddirection)</span><span class="s0">;</span>
+<span class="s4">//          获取对应的位置的天气情况</span>
+        <span class="s4">//WeatherBean.ResultsBean.WeatherDataBean = dataBean = futureList.get(i);</span>
+        <span class="s1">idateTv3.setText(futureList.get_$3().getTime()+</span><span class="s5">&quot;   后天&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">iconTv3.setText(futureList.get_$3().getDay_weather())</span><span class="s0">;</span>
+        <span class="s1">wind3.setText(futureList.get_$3().getDay_wind_direction())</span><span class="s0">;</span>
+        <span class="s1">itemprangeTv3.setText(futureList.get_$3().getMin_degree()+</span><span class="s5">&quot;~&quot;</span><span class="s1">+futureList.get_$3().getMax_degree()+</span><span class="s5">&quot;°C&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+        <span class="s1">View itemView2 = LayoutInflater.from(getActivity()).inflate(R.layout.item_main_center</span><span class="s0">, null</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">itemView.setLayoutParams(</span><span class="s0">new </span><span class="s1">LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT</span><span class="s0">, </span><span class="s1">LinearLayout.LayoutParams.WRAP_CONTENT))</span><span class="s0">;</span>
+        <span class="s1">futureLayout.addView(itemView2)</span><span class="s0">;</span>
+        <span class="s1">TextView idateTv2 = itemView2.findViewById(R.id.item_center_tv_date)</span><span class="s0">;</span>
+        <span class="s1">TextView iconTv2 = itemView2.findViewById(R.id.item_center_tv_con)</span><span class="s0">;</span>
+        <span class="s1">TextView itemprangeTv2 = itemView2.findViewById(R.id.item_center_tv_temp)</span><span class="s0">;</span>
+        <span class="s1">TextView wind2 = itemView2.findViewById(R.id.item_center_tv_winddirection)</span><span class="s0">;</span>
+<span class="s4">//          获取对应的位置的天气情况</span>
+        <span class="s1">idateTv2.setText(futureList.get_$4().getTime()+</span><span class="s5">&quot; 大后天&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">iconTv2.setText(futureList.get_$4().getDay_weather())</span><span class="s0">;</span>
+        <span class="s1">wind2.setText(futureList.get_$4().getDay_wind_direction())</span><span class="s0">;</span>
+        <span class="s1">itemprangeTv2.setText(futureList.get_$4().getMin_degree()+</span><span class="s5">&quot;~&quot;</span><span class="s1">+futureList.get_$4().getMax_degree()+</span><span class="s5">&quot;°C&quot;</span><span class="s1">)</span><span class="s0">;</span>
+
+    <span class="s1">}</span>
+
+<span class="s4">//    时间格式化</span>
+    <span class="s0">private </span><span class="s1">String changeTime(String update_time) </span><span class="s0">throws </span><span class="s1">ParseException {</span>
+        <span class="s1">SimpleDateFormat sf1 = </span><span class="s0">new </span><span class="s1">SimpleDateFormat(</span><span class="s5">&quot;yyyyMMddHHmm&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">SimpleDateFormat sf2 =</span><span class="s0">new </span><span class="s1">SimpleDateFormat(</span><span class="s5">&quot;yyyy-MM-dd HH:mm&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">String sfstr = </span><span class="s5">&quot;&quot;</span><span class="s0">;</span>
+            <span class="s1">sfstr = sf2.format(sf1.parse(update_time))</span><span class="s0">;</span>
+            <span class="s0">return </span><span class="s1">sfstr</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">initView(View view) {</span>
+<span class="s4">//        用于初始化控件操作</span>
+        <span class="s1">tipTv  = view.findViewById(R.id.frag_tv_tips)</span><span class="s0">;</span>
+        <span class="s1">tempTv = view.findViewById(R.id.frag_tv_currenttemp)</span><span class="s0">;</span>
+        <span class="s1">cityTv = view.findViewById(R.id.frag_tv_city)</span><span class="s0">;</span>
+        <span class="s1">conditionTv = view.findViewById(R.id.frag_tv_condition)</span><span class="s0">;</span>
+        <span class="s1">windTv = view.findViewById(R.id.frag_tv_wind)</span><span class="s0">;</span>
+        <span class="s1">tempRangeTv = view.findViewById(R.id.frag_tv_temprange)</span><span class="s0">;</span>
+        <span class="s1">dateTv = view.findViewById(R.id.frag_tv_date)</span><span class="s0">;</span>
+        <span class="s1">clothIndexTv = view.findViewById(R.id.frag_index_tv_dress)</span><span class="s0">;</span>
+        <span class="s1">carIndexTv = view.findViewById(R.id.frag_index_tv_washcar)</span><span class="s0">;</span>
+        <span class="s1">coldIndexTv = view.findViewById(R.id.frag_index_tv_cold)</span><span class="s0">;</span>
+        <span class="s1">sportIndexTv = view.findViewById(R.id.frag_index_tv_sport)</span><span class="s0">;</span>
+        <span class="s1">raysIndexTv = view.findViewById(R.id.frag_index_tv_rays)</span><span class="s0">;</span>
+        <span class="s1">dayIv = view.findViewById(R.id.frag_iv_today)</span><span class="s0">;</span>
+        <span class="s1">futureLayout = view.findViewById(R.id.frag_center_layout)</span><span class="s0">;</span>
+        <span class="s1">outLayout = view.findViewById(R.id.out_layout)</span><span class="s0">;</span>
+        <span class="s1">umbrellaTv = view.findViewById(R.id.frag_index_tv_umbrella)</span><span class="s0">;</span>
+<span class="s4">//        设置点击事件的监听</span>
+        <span class="s1">clothIndexTv.setOnClickListener(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">carIndexTv.setOnClickListener(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">coldIndexTv.setOnClickListener(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">sportIndexTv.setOnClickListener(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">raysIndexTv.setOnClickListener(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">umbrellaTv.setOnClickListener(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+        <span class="s1">AlertDialog.Builder builder = </span><span class="s0">new </span><span class="s1">AlertDialog.Builder(getActivity())</span><span class="s0">;</span>
+        <span class="s0">switch </span><span class="s1">(v.getId()) {</span>
+            <span class="s0">case </span><span class="s1">R.id.frag_index_tv_dress:</span>
+                <span class="s1">builder.setTitle(</span><span class="s5">&quot;穿衣指数&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">WeatherBean.DataBean.IndexBean.ClothesBean cloth = index.getClothes()</span><span class="s0">;</span>
+                <span class="s4">//把指数信息放到字符串中去显示</span>
+                <span class="s1">String msg = cloth.getInfo()+</span><span class="s5">&quot;</span><span class="s0">\n</span><span class="s5">&quot;</span><span class="s1">+cloth.getDetail()</span><span class="s0">;</span>
+                <span class="s1">builder.setMessage(msg)</span><span class="s0">;</span>
+                <span class="s1">builder.setPositiveButton(</span><span class="s5">&quot;确定&quot;</span><span class="s0">,null</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s1">R.id.frag_index_tv_washcar:</span>
+                <span class="s1">builder.setTitle(</span><span class="s5">&quot;洗车指数&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">WeatherBean.DataBean.IndexBean.CarwashBean car = index.getCarwash()</span><span class="s0">;</span>
+                <span class="s1">msg = car.getInfo()+</span><span class="s5">&quot;</span><span class="s0">\n</span><span class="s5">&quot;</span><span class="s1">+car.getDetail()</span><span class="s0">;</span>
+                <span class="s1">builder.setMessage(msg)</span><span class="s0">;</span>
+                <span class="s1">builder.setPositiveButton(</span><span class="s5">&quot;确定&quot;</span><span class="s0">,null</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s1">R.id.frag_index_tv_cold:</span>
+                <span class="s1">builder.setTitle(</span><span class="s5">&quot;感冒指数&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">WeatherBean.DataBean.IndexBean.ColdBean cold = index.getCold()</span><span class="s0">;</span>
+                <span class="s1">msg = cold.getInfo()+</span><span class="s5">&quot;</span><span class="s0">\n</span><span class="s5">&quot;</span><span class="s1">+cold.getDetail()</span><span class="s0">;</span>
+                <span class="s1">builder.setMessage(msg)</span><span class="s0">;</span>
+                <span class="s1">builder.setPositiveButton(</span><span class="s5">&quot;确定&quot;</span><span class="s0">,null</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s1">R.id.frag_index_tv_sport:</span>
+                <span class="s1">builder.setTitle(</span><span class="s5">&quot;运动指数&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">WeatherBean.DataBean.IndexBean.SportsBean sport = index.getSports()</span><span class="s0">;</span>
+                <span class="s1">msg = sport.getInfo()+</span><span class="s5">&quot;</span><span class="s0">\n</span><span class="s5">&quot;</span><span class="s1">+sport.getDetail()</span><span class="s0">;</span>
+                <span class="s1">builder.setMessage(msg)</span><span class="s0">;</span>
+                <span class="s1">builder.setPositiveButton(</span><span class="s5">&quot;确定&quot;</span><span class="s0">,null</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s1">R.id.frag_index_tv_rays:</span>
+                <span class="s1">builder.setTitle(</span><span class="s5">&quot;紫外线指数&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">WeatherBean.DataBean.IndexBean.UltravioletBean ultraviolet = index.getUltraviolet()</span><span class="s0">;</span>
+                <span class="s1">msg = ultraviolet.getInfo()+</span><span class="s5">&quot;</span><span class="s0">\n</span><span class="s5">&quot;</span><span class="s1">+ultraviolet.getDetail()</span><span class="s0">;</span>
+                <span class="s1">builder.setMessage(msg)</span><span class="s0">;</span>
+                <span class="s1">builder.setPositiveButton(</span><span class="s5">&quot;确定&quot;</span><span class="s0">,null</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+            <span class="s0">case </span><span class="s1">R.id.frag_index_tv_umbrella:</span>
+                <span class="s1">builder.setTitle(</span><span class="s5">&quot;雨伞指数&quot;</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s1">WeatherBean.DataBean.IndexBean.UmbrellaBean umbrella = index.getUmbrella()</span><span class="s0">;</span>
+                <span class="s1">msg = umbrella.getInfo()+</span><span class="s5">&quot;</span><span class="s0">\n</span><span class="s5">&quot;</span><span class="s1">+umbrella.getDetail()</span><span class="s0">;</span>
+                <span class="s1">builder.setMessage(msg)</span><span class="s0">;</span>
+                <span class="s1">builder.setPositiveButton(</span><span class="s5">&quot;确定&quot;</span><span class="s0">,null</span><span class="s1">)</span><span class="s0">;</span>
+                <span class="s0">break;</span>
+        <span class="s1">}</span>
+        <span class="s1">builder.create().show()</span><span class="s0">;</span>
+        <span class="s4">//显示对话框</span>
+    <span class="s1">}</span>
+
+    <span class="s4">//要把这个fragment添加到mainactivity的viewpaper</span>
+    <span class="s4">//需要用到CityFragmentPagerAdapter适配器</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

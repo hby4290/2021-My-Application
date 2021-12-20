@@ -1,0 +1,46 @@
+<html>
+<head>
+<title>DBHelper.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+.s4 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+DBHelper.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.myapplication.db</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Context</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.database.sqlite.SQLiteDatabase</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.database.sqlite.SQLiteOpenHelper</span><span class="s0">;</span>
+
+<span class="s0">public class </span><span class="s1">DBHelper </span><span class="s0">extends </span><span class="s1">SQLiteOpenHelper{</span>
+
+    <span class="s0">public </span><span class="s1">DBHelper(Context context){</span>
+
+        <span class="s0">super</span><span class="s1">(context</span><span class="s0">,</span><span class="s2">&quot;forecast.db&quot;</span><span class="s0">,null,</span><span class="s3">1</span><span class="s1">)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onCreate(SQLiteDatabase db) {</span>
+        <span class="s4">//第一次创建数据库时执行的方法</span>
+        <span class="s4">//        创建表的操作</span>
+        <span class="s1">String sql = </span><span class="s2">&quot;create table info(_id integer primary key autoincrement,city varchar(20) unique not null,content text not null)&quot;</span><span class="s0">;</span>
+        <span class="s1">db.execSQL(sql)</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onUpgrade(SQLiteDatabase db</span><span class="s0">, int </span><span class="s1">oldVersion</span><span class="s0">, int </span><span class="s1">newVersion) {</span>
+        <span class="s4">//版本更新时执行的方法</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>
